@@ -40,10 +40,10 @@
 			</div>
 			<div class="row">
 				<div class="col-sm-6">
-					<light-card :entity="entities['light.front_porch']"></light-card>
+					<light :entity="entities['light.front_porch']"></light>
 				</div>
 				<div class="col-sm-6">
-					<light-card :entity="entities['light.living_room']"></light-card>
+					<light :entity="entities['light.living_room']"></light>
 				</div>
 			</div>
 		</div>
@@ -87,10 +87,10 @@
 		<div class="col-sm-6">
 			<div class="row">
 				<div class="col-sm-6">
-					<light-card :entity="entities['light.back_porch']"></light-card>
+					<light :entity="entities['light.back_porch']"></light>
 				</div>
 				<div class="col-sm-6">
-					<light-card :entity="entities['light.hallway']"></light-card>
+					<light :entity="entities['light.hallway']"></light>
 				</div>
 			</div>
 			<div class="row">

@@ -17,8 +17,6 @@
 <script type="text/javascript" src="dist/js/app.js"></script>
 <!-- <script type="text/javascript" src="build.js"></script> -->
 
-<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.3/require.min.js"></script> -->
-
 <script type="text/javascript">
 var app;
 var areaChartData;
@@ -38,7 +36,7 @@ $(document).on('DOMContentLoaded', function () {
 });
 
 function initVue() {
-	Vue.component('light-card', {
+	Vue.component('light', {
 		props: ['entity'],
 		template:'<div class="info-box" v-on:click="toggleSwitch(entity[\'entity_id\'])">' +
 			'<span class="info-box-icon" v-bind:class="[(entity[\'state\'] == \'on\') ? \'bg-yellow\' : \'bg-black\']"><i class="fa fa-lightbulb-o"></i></span>' +
@@ -61,7 +59,7 @@ function initVue() {
 						'<h3 class="box-title">{{entity[\'attributes\'][\'friendly_name\']}}</h3>' +
 					'</div>' +
 					'<div class="box-body">' +
-						'<img v-bind:src="\'https://192.168.1.220:8123\' + entity[\'attributes\'][\'entity_picture\']" style="height:236px; margin: 0 auto;">' +
+						'<img v-bind:src="$root.config[\'ha_url\'] + entity[\'attributes\'][\'entity_picture\']" style="height:236px; margin: 0 auto;">' +
 					'</div>' +
 			'</div>',
 	});
