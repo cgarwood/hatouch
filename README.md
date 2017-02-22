@@ -9,4 +9,4 @@ them up, they probably aren't getting done anytime soon. Feel free to pick up an
 
 ## Installation
 Clone the repo and stick it in a publically accessible folder on a webserver with PHP support. Update the config.js file to point to your HomeAssistant installation.
-Your HomeAssistant installation must list the IP or subnet of your webserver as a trusted network. Modify the index.php file and update entities['sensor.xyz'] references to match entities within your HomeAssistant installation.
+Your HomeAssistant installation must list the IP or subnet of your webserver as a trusted network. Modify the index.php file and update entities['sensor.xyz'] references to match entities within your HomeAssistant installation. If the index.php file has any references to entities that don't exist, you'll get stuck with a blank page. Check your browser dev tools for more info if that happens.

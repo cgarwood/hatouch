@@ -23,7 +23,7 @@
 var app;
 var areaChartData;
 var areaChartOptions;
-var HomeAssistantApi = new HomeAssistantApi(window.ha_url, function (entity) {});;
+var HomeAssistantApi = new HomeAssistantApi(window.config['ha_url'], function (entity) {});;
 // Wait for DOM
 $(document).on('DOMContentLoaded', function () {
 	
@@ -70,7 +70,7 @@ function initVue() {
 		el: '#wrapper',
 		data: {
 			entities : HomeAssistantApi.entities,
-			ha_url : window.ha_url,
+			config : window.config,
 			time : '',
 			date : '',
 		},
