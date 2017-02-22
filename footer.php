@@ -61,7 +61,7 @@ function initVue() {
 						'<h3 class="box-title">{{entity[\'attributes\'][\'friendly_name\']}}</h3>' +
 					'</div>' +
 					'<div class="box-body">' +
-						'<img v-bind:src="\'https://192.168.1.220:8123\' + entity[\'attributes\'][\'entity_picture\']" style="height:236px; margin: 0 auto;">' +
+						'<img v-bind:src="$root.config[\'ha_url\'] + entity[\'attributes\'][\'entity_picture\']" style="height:236px; margin: 0 auto;">' +
 					'</div>' +
 			'</div>',
 	});
