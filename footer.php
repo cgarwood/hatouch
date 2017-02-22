@@ -17,8 +17,6 @@
 <script type="text/javascript" src="dist/js/app.js"></script>
 <!-- <script type="text/javascript" src="build.js"></script> -->
 
-<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.3/require.min.js"></script> -->
-
 <script type="text/javascript">
 var app;
 var areaChartData;
