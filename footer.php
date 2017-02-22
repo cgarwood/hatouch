@@ -38,7 +38,7 @@ $(document).on('DOMContentLoaded', function () {
 });
 
 function initVue() {
-	Vue.component('light-card', {
+	Vue.component('light', {
 		props: ['entity'],
 		template:'<div class="info-box" v-on:click="toggleSwitch(entity[\'entity_id\'])">' +
 			'<span class="info-box-icon" v-bind:class="[(entity[\'state\'] == \'on\') ? \'bg-yellow\' : \'bg-black\']"><i class="fa fa-lightbulb-o"></i></span>' +
