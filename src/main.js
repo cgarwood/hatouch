@@ -1,10 +1,35 @@
 import Vue from 'vue'
-import HomeAssistantApi from '../homeassistant-api.js'
+import Vuex from 'vuex'
+import HomeAssistantApi from './homeassistant-api.js'
 //import App from './App.vue'
-
+/*
 var haapi = new HomeAssistantApi(window.config['ha_url']);
 haapi.getConfiguration();
 haapi.setEventStreamListener();
+*/
+Vue.use(Vuex);
+
+const store = new Vuex.Store({
+	state: {
+		entities: {}
+	},
+	mutations: {
+		UPDATE_ENTITY(state, entity) {
+			//state.entities[entity['entity_id']] = entity;
+			Vue.set(state.entities, entity['entity_id'], entity);
+		}
+	},
+	actions: {
+		CONNECT({commit}) {
+			const api = new HomeAssistantApi(window.config['ha_url']);
+			api.on('entity', (entity) => {
+				commit('UPDATE_ENTITY', entity);
+			});
+			api.connect();
+			api.setEventStreamListener();
+		}
+	}
+});
 
 Vue.component('light', require('../components/light.vue'));
 
@@ -23,12 +48,15 @@ Vue.component('camera', {
 new Vue({
 	el: '#wrapper',
 	//render: h => h(App),
+	store,
 	data: {
 		loading: true,
-		entities : {},
 		config : window.config,
 		time : '',
 		date : '',
+	},
+	created: function() {
+		this.$store.dispatch('CONNECT');
 	},
 	methods: {
 		getTime() {
