@@ -1,5 +1,10 @@
 import Vue from 'vue'
+import HomeAssistantApi from '../homeassistant-api.js'
 //import App from './App.vue'
+
+var haapi = new HomeAssistantApi(window.config['ha_url']);
+haapi.getConfiguration();
+haapi.setEventStreamListener();
 
 Vue.component('light', require('../components/light.vue'));
 
@@ -31,33 +36,12 @@ new Vue({
 			this.time = moment().format("h:mm:ssa");
 			this.date = moment().format("M/D/YYYY");
 		},
-		getHAData() {
-			var self = this;
-			self.loading = true;
-			var xhr = new XMLHttpRequest();
-			xhr.open('GET', this.config['ha_url'] + '/api/bootstrap');
-			xhr.onload = function (e) {
-				var data = JSON.parse(this.response);
-
-				// Process entities
-				for (var i = 0; i < data.states.length; i++) {
-					Vue.set(self.entities, data.states[i]['entity_id'], data.states[i]);
-				}
-
-				self.loading = false;
-				
-				// Store configuration
-				//HomeAssistantApi.configuration = data;
-			};
-			xhr.send();
-		},
 		toggleSwitch: function(entity_id) {
-			HomeAssistantApi.callService('homeassistant', 'toggle', {"entity_id" : entity_id}, function(d) {console.log(d);});
+			haapi.callService('homeassistant', 'toggle', {"entity_id" : entity_id}, function(d) {console.log(d);});
 		}
 	},
 	mounted: function() {
 		this.getTime();
-		this.getHAData();
 		setInterval(this.getTime, 1000);
 	}
 })

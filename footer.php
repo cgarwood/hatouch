@@ -21,16 +21,16 @@
 var app;
 var areaChartData;
 var areaChartOptions;
-var HomeAssistantApi = new HomeAssistantApi(window.config['ha_url'], function (entity) {});;
+//var HomeAssistantApi = new HomeAssistantApi(window.config['ha_url'], function (entity) {});;
 // Wait for DOM
 $(document).on('DOMContentLoaded', function () {
-	
+	/*
     // Initialize API
     HomeAssistantApi.getConfiguration();
 
     // Setup Event Stream Listener
     HomeAssistantApi.setEventStreamListener();
-		
+	*/	
 });
 
 </script>

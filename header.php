@@ -19,7 +19,7 @@
 	<!-- Scripts -->
 	<script src="plugins/jQuery/jquery-2.2.3.min.js"></script>
 	<script type="text/javascript" src="config.js"></script>
-	<script type="text/javascript" src="homeassistant-api.js"></script>
+<!--	<script type="text/javascript" src="homeassistant-api.js"></script> -->
 
 	<style type="text/css">
 		.navbar-nav>.messages-menu>.dropdown-menu>li .menu>li>a>h4 { margin-left: 0; }

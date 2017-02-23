@@ -144,6 +144,7 @@
 
 <script type="text/javascript">
 $(document).ready(function() {
+	/*
 	HomeAssistantApi.getHistory('sensor.pws_temp_f', moment().subtract(24,'hours').format(), function(data) {
 		var states = {};
 		var labels = [];
@@ -209,6 +210,7 @@ $(document).ready(function() {
 			options: areaChartOptions
 		});
 	});
+	*/
 });
 </script>
 <?php include('footer.php'); ?>
