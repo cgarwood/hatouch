@@ -1,3 +1,4 @@
-config.js
-notifications/*
-!notifications/.gitkeep
+.DS_Store
+node_modules/
+dist/
+npm-debug.log

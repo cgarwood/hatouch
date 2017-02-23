@@ -24,7 +24,7 @@
 						<span class="info-box-icon bg-red"><i class="fa fa-home"></i></span>
 						<div class="info-box-content">
 							<span class="info-box-text">Indoor Temp</span>
-							<span class="info-box-number">{{entities['sensor.hallway_thermostat_temperature']['state']}}{{entities['sensor.hallway_thermostat_temperature']['attributes']['unit_of_measurement']}}</span>
+							<span v-if="!loading" class="info-box-number">{{entities['sensor.hallway_thermostat_temperature']['state']}}{{entities['sensor.hallway_thermostat_temperature']['attributes']['unit_of_measurement']}}</span>
 						</div>
 					</div>
 				</div>
@@ -33,22 +33,22 @@
 						<span class="info-box-icon bg-yellow"><i class="fa fa-bolt"></i></span>
 						<div class="info-box-content">
 							<span class="info-box-text">Power Usage</span>
-							<span class="info-box-number">{{Math.round(entities['sensor.aeotec_home_energy_meter_power_11_4']['state'])}}{{entities['sensor.aeotec_home_energy_meter_power_11_4']['attributes']['unit_of_measurement']}}</span>
+							<span v-if="!loading" class="info-box-number">{{Math.round(entities['sensor.aeotec_home_energy_meter_power_11_4']['state'])}}{{entities['sensor.aeotec_home_energy_meter_power_11_4']['attributes']['unit_of_measurement']}}</span>
 						</div>
 					</div>
 				</div>
 			</div>
 			<div class="row">
 				<div class="col-sm-6">
-					<light :entity="entities['light.front_porch']"></light>
+					<light entity="light.front_porch"></light>
 				</div>
 				<div class="col-sm-6">
-					<light :entity="entities['light.living_room']"></light>
+					<light entity="light.living_room"></light>
 				</div>
 			</div>
 		</div>
 		<div class="col-md-6">
-			<div class="box box-widget widget-user">
+			<div v-if="!loading" class="box box-widget widget-user">
 				<!-- Add the bg color to the header using any of the bg-* classes -->
 				<div class="widget-user-header bg-black" style="background: url('images/fountain.jpg') center center; background-size: cover; height: 108px;">
 				<h3 class="widget-user-username" style="font-weight: bold;">Current Conditions</h3>
@@ -87,10 +87,10 @@
 		<div class="col-sm-6">
 			<div class="row">
 				<div class="col-sm-6">
-					<light :entity="entities['light.back_porch']"></light>
+					<light entity="light.back_porch"></light>
 				</div>
 				<div class="col-sm-6">
-					<light :entity="entities['light.hallway']"></light>
+					<light entity="light.hallway"></light>
 				</div>
 			</div>
 			<div class="row">
