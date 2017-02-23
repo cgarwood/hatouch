@@ -41,15 +41,11 @@ new Vue({
 
 				// Process entities
 				for (var i = 0; i < data.states.length; i++) {
-					//self.entities[data.states[i]['entity_id']] = {}
-					//self.entities[data.states[i]['entity_id']] = data.states[i];
 					Vue.set(self.entities, data.states[i]['entity_id'], data.states[i]);
 				}
-				//this.entities = data.states;
 
 				self.loading = false;
 				
-				console.log(self.entities);
 				// Store configuration
 				//HomeAssistantApi.configuration = data;
 			};
