@@ -7,7 +7,7 @@
 	<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 
 
-	<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" href="dist/css/bootstrap.min.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
 	<link rel="stylesheet" href="dist/css/AdminLTE.min.css">
@@ -19,9 +19,8 @@
 	<!-- Scripts -->
 	<script src="plugins/jQuery/jquery-2.2.3.min.js"></script>
 	<script type="text/javascript" src="config.js"></script>
-	<script type="text/javascript" src="homeassistant-api.js"></script>
-	<script type="text/javascript" src="vue.js"></script>
-	
+<!--	<script type="text/javascript" src="homeassistant-api.js"></script> -->
+
 	<style type="text/css">
 		.navbar-nav>.messages-menu>.dropdown-menu>li .menu>li>a>h4 { margin-left: 0; }
 		.navbar-nav>.messages-menu>.dropdown-menu>li .menu>li>a>p { margin-left: 0; }
