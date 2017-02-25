@@ -11,6 +11,7 @@
   "dependencies": {
     "moment": "^2.17.1",
     "vue": "^2.1.0",
+    "vue-gesture": "^1.0.8",
     "vuex": "^2.1.2"
   },
   "devDependencies": {
