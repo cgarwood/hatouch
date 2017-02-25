@@ -20,10 +20,10 @@
 		<div class="col-md-6">
 			<div class="row">
 				<div class="col-sm-6">
-					<basic-entity entity_id="sensor.hallway_thermostat_temperature" title="Indoor Temperature" icon="fa-home" color-class="bg-red"></basic-entity>
+					<sensor entity_id="sensor.hallway_thermostat_temperature" title="Indoor Temperature" icon="fa-home" color-class="bg-red"></sensor>
 				</div>
 				<div class="col-sm-6">
-					<basic-entity entity_id="sensor.aeotec_home_energy_meter_power_11_4" icon="fa-bolt" color-class="bg-yellow"></basic-entity>
+					<sensor entity_id="sensor.aeotec_home_energy_meter_power_11_4" icon="fa-bolt" color-class="bg-yellow"></sensor>
 				</div>
 			</div>
 			<div class="row">

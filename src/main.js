@@ -26,7 +26,7 @@ const store = new Vuex.Store({
 	}
 });
 
-Vue.component('basic-entity', require('./components/basic-entity.vue'));
+Vue.component('sensor', require('./components/sensor.vue'));
 Vue.component('light', require('./components/light.vue'));
 
 Vue.component('camera', {
