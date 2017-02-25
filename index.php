@@ -15,7 +15,8 @@
 	</section> -->
 
 	<!-- Main content -->
-	<section class="content">
+	<h1 v-if="!entities">Loading...</h1>
+	<section class="content" v-cloak>
 	<div class="row">
 		<div class="col-md-6">
 			<div class="row">

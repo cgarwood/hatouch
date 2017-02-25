@@ -24,6 +24,7 @@
 	<style type="text/css">
 		.navbar-nav>.messages-menu>.dropdown-menu>li .menu>li>a>h4 { margin-left: 0; }
 		.navbar-nav>.messages-menu>.dropdown-menu>li .menu>li>a>p { margin-left: 0; }
+		[v-cloak] { display: none; }
 	</style>
 	
 </head>

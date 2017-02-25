@@ -48,7 +48,6 @@ new Vue({
 	//render: h => h(App),
 	store,
 	data: {
-		loading: true,
 		config : window.config,
 		time : '',
 		date : '',
