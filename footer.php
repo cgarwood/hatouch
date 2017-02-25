@@ -1,3 +1,5 @@
+<script type="text/javascript" src="dist/build.js"></script>
+
 <!-- jQuery UI 1.11.4 -->
 <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
 <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
@@ -15,7 +17,6 @@
 <script src="plugins/fastclick/fastclick.js"></script>
 
 <script type="text/javascript" src="dist/js/app.js"></script>
-<script type="text/javascript" src="dist/build.js"></script>
 
 <script type="text/javascript">
 var app;

@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import moment from 'moment'
 import HomeAssistantApi from './homeassistant-api.js'
 //import App from './App.vue'
 
@@ -26,6 +27,7 @@ const store = new Vuex.Store({
 	}
 });
 
+Vue.component('action', require('./components/action.vue'));
 Vue.component('sensor', require('./components/sensor.vue'));
 Vue.component('light', require('./components/light.vue'));
 

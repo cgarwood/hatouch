@@ -97,30 +97,9 @@
 			</div>
 		</div>
 		<div class="col-sm-6">
-			<div class="info-box bg-aqua">
-				<span class="info-box-icon"><i class="fa fa-bed"></i></span>
-				<div class="info-box-content">
-					<span class="info-box-text">Quick Actions</span>
-					<span class="info-box-number">Baby's Bedtime</span>
-					<span class="info-box-text" style="text-transform: none; white-space: normal; line-height: 16px;"><em>Dims living room lights, turns on cabinet lights. Turns off other lights.</em></span>
-				</div>
-			</div>
-			<div class="info-box bg-aqua">
-				<span class="info-box-icon"><i class="fa fa-automobile"></i></span>
-				<div class="info-box-content">
-					<span class="info-box-text">Quick Actions</span>
-					<span class="info-box-number">Goodbye Lighting</span>
-					<span class="info-box-text" style="text-transform: none; white-space: normal; line-height: 16px;"><em>Turns on porch light for 3 minutes (after dark).</em></span>
-				</div>
-			</div>
-			<div class="info-box bg-aqua">
-				<span class="info-box-icon"><i class="fa fa-bed"></i></span>
-				<div class="info-box-content">
-					<span class="info-box-text">Quick Actions</span>
-					<span class="info-box-number">Goodnight</span>
-					<span class="info-box-text" style="text-transform: none; white-space: normal; line-height: 16px;"><em>Turns off all lights. Turns on dim cabinet lights.</em></span>
-				</div>
-			</div>
+			<action title="Baby's Bedtime" icon="fa-bed" description="Dims living room lights, turns on cabinet lights. Turns off other lights" entity_id="scene.baby_bedtime"></action>
+			<action title="Goodbye" icon="fa-automobile" description="Turns on porch light for 3 minutes (after dark)." entity_id="script.goodbye_lights"></action>
+			<action title="Goodnight" icon="fa-bed" description="Turns off all lights. Turns on dim cabinet lights." entity_id="script.goodnight"></action>
 		</div>
 	</div>
 
