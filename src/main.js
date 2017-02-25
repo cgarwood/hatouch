@@ -2,11 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import HomeAssistantApi from './homeassistant-api.js'
 //import App from './App.vue'
-/*
-var haapi = new HomeAssistantApi(window.config['ha_url']);
-haapi.getConfiguration();
-haapi.setEventStreamListener();
-*/
+
 Vue.use(Vuex);
 
 const store = new Vuex.Store({
@@ -15,22 +11,22 @@ const store = new Vuex.Store({
 	},
 	mutations: {
 		UPDATE_ENTITY(state, entity) {
-			//state.entities[entity['entity_id']] = entity;
 			Vue.set(state.entities, entity['entity_id'], entity);
 		}
 	},
 	actions: {
 		CONNECT({commit}) {
-			const api = new HomeAssistantApi(window.config['ha_url']);
-			api.on('entity', (entity) => {
+			const haapi = new HomeAssistantApi(window.config['ha_url']);
+			haapi.on('entity', (entity) => {
 				commit('UPDATE_ENTITY', entity);
 			});
-			api.connect();
-			api.setEventStreamListener();
+			haapi.connect();
+			haapi.setEventStreamListener();
 		}
 	}
 });
 
+Vue.component('basic-entity', require('../components/basic-entity.vue'));
 Vue.component('light', require('../components/light.vue'));
 
 Vue.component('camera', {
@@ -55,6 +51,11 @@ new Vue({
 		time : '',
 		date : '',
 	},
+	computed: {
+		entities() {
+			return this.$store.state.entities;
+		}
+	},
 	created: function() {
 		this.$store.dispatch('CONNECT');
 	},
@@ -64,9 +65,10 @@ new Vue({
 			this.time = moment().format("h:mm:ssa");
 			this.date = moment().format("M/D/YYYY");
 		},
-		toggleSwitch: function(entity_id) {
-			haapi.callService('homeassistant', 'toggle', {"entity_id" : entity_id}, function(d) {console.log(d);});
-		}
+		callService(domain, service, data, callback) {
+			const haapi = new HomeAssistantApi(window.config['ha_url']);
+			haapi.callService(domain, service, data, callback);
+		},
 	},
 	mounted: function() {
 		this.getTime();

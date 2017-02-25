@@ -20,22 +20,10 @@
 		<div class="col-md-6">
 			<div class="row">
 				<div class="col-sm-6">
-					<div class="info-box">
-						<span class="info-box-icon bg-red"><i class="fa fa-home"></i></span>
-						<div class="info-box-content">
-							<span class="info-box-text">Indoor Temp</span>
-							<span v-if="!loading" class="info-box-number">{{entities['sensor.hallway_thermostat_temperature']['state']}}{{entities['sensor.hallway_thermostat_temperature']['attributes']['unit_of_measurement']}}</span>
-						</div>
-					</div>
+					<basic-entity entity_id="sensor.hallway_thermostat_temperature" title="Indoor Temperature" icon="fa-home" color-class="bg-red"></basic-entity>
 				</div>
 				<div class="col-sm-6">
-					<div class="info-box">
-						<span class="info-box-icon bg-yellow"><i class="fa fa-bolt"></i></span>
-						<div class="info-box-content">
-							<span class="info-box-text">Power Usage</span>
-							<span v-if="!loading" class="info-box-number">{{Math.round(entities['sensor.aeotec_home_energy_meter_power_11_4']['state'])}}{{entities['sensor.aeotec_home_energy_meter_power_11_4']['attributes']['unit_of_measurement']}}</span>
-						</div>
-					</div>
+					<basic-entity entity_id="sensor.aeotec_home_energy_meter_power_11_4" icon="fa-bolt" color-class="bg-yellow"></basic-entity>
 				</div>
 			</div>
 			<div class="row">
@@ -48,7 +36,7 @@
 			</div>
 		</div>
 		<div class="col-md-6">
-			<div v-if="!loading" class="box box-widget widget-user">
+			<div v-if="entities['sensor.pws_weather']" class="box box-widget widget-user">
 				<!-- Add the bg color to the header using any of the bg-* classes -->
 				<div class="widget-user-header bg-black" style="background: url('images/fountain.jpg') center center; background-size: cover; height: 108px;">
 				<h3 class="widget-user-username" style="font-weight: bold;">Current Conditions</h3>

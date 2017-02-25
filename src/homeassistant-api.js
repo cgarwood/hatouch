@@ -57,5 +57,18 @@ class HomeAssistantApi extends EventEmitter {
 			alert('This browser is not compatible since EventSource is not supported.');
 		}
 	}
+	callService(domain, service, data, callback) {
+		var self = this;
+		// Setup new AJAX call
+		var xhr = new XMLHttpRequest();
+		xhr.open('POST', window.config['ha_url'] + '/api/services/' + domain + '/' + service);
+		xhr.onload = function (e) {
+			if (callback) {
+				var data = JSON.parse(this.response);
+				callback(data);
+			}
+		};
+		xhr.send(JSON.stringify(data));
+	}
 }
 export default HomeAssistantApi;
