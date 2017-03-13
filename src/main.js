@@ -1,10 +1,16 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import VueTouch from 'vue-touch'
+import { modal } from 'vue-strap'
+import VueSlider from 'vue-slider-component'
 import moment from 'moment'
 import HomeAssistantApi from './homeassistant-api.js'
 //import App from './App.vue'
 
+var $ = require('jquery');
+
 Vue.use(Vuex);
+Vue.use(VueTouch);
 
 const store = new Vuex.Store({
 	state: {
@@ -27,6 +33,8 @@ const store = new Vuex.Store({
 	}
 });
 
+Vue.component('modal', modal);
+Vue.component('vue-slider', VueSlider);
 Vue.component('action', require('./components/action.vue'));
 Vue.component('sensor', require('./components/sensor.vue'));
 Vue.component('light', require('./components/light.vue'));

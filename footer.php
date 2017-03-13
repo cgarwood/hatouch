@@ -13,7 +13,7 @@
 <!-- Slimscroll -->
 <script src="plugins/slimScroll/jquery.slimscroll.min.js"></script>
 <script src="plugins/chartjs/Chart.min.js"></script>
-<script src="plugins/fastclick/fastclick.js"></script>
+<!-- <script src="plugins/fastclick/fastclick.js"></script> -->
 
 <script type="text/javascript" src="dist/js/app.js"></script>
 
