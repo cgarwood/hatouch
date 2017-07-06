@@ -29,7 +29,7 @@ module.exports = {
 		},
 		icon : {
 			type: String,
-			default: "fa-lightbulb-o"
+			default: "fa-circle-thin"
 		},
 		colorClass : {
 			type: String,
