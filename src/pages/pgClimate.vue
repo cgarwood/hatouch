@@ -1,9 +1,5 @@
-<?php include('header.php'); ?>
-
-<div class="content-wrapper">
-	<h1 v-if="!entities">Loading...</h1>
-	<!-- Main content -->
-	<section class="content" v-cloak>
+<template>
+<section class="content" v-cloak>
 	<div class="row">
 		<div class="col-md-6">
 			<div class="row">
@@ -16,10 +12,10 @@
 			</div>
 			<div class="row">
 				<div class="col-sm-6">
-					<sensor entity_id="sensor.aeotec_multisensor_6_temperature_10_1" title="Garage Temperature" icon="fa-sun-o" color-class="bg-aqua"></sensor>
+					<sensor entity_id="sensor.garage_multisensor_temperature_8_1" title="Garage Temperature" icon="fa-sun-o" color-class="bg-aqua"></sensor>
 				</div>
 				<div class="col-sm-6">
-					<sensor entity_id="sensor.aeotec_multisensor_6_relative_humidity_10_5" title="Garage Humidity" icon="fa-tint" color-class="bg-aqua"></sensor>
+					<sensor entity_id="sensor.garage_multisensor_relative_humidity_8_5" title="Garage Humidity" icon="fa-tint" color-class="bg-aqua"></sensor>
 				</div>
 			</div>
 		</div>
@@ -88,10 +84,14 @@
 	</div>
 
 	</section>
-	<!-- /.content -->
-</div>
-<!-- /.content-wrapper -->
+</template>
 
-</div>
-
-<?php include('footer.php'); ?>
+<script>
+module.exports = {
+	computed: {
+		entities() {
+			return this.$store.state.entities;
+		},
+	},
+}
+</script>

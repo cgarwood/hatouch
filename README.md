@@ -9,9 +9,11 @@ them up, they probably aren't getting done anytime soon. Feel free to pick up an
 
 ## Installation
 1. You will need npm and the webpack npm module.
-2. Clone the repo and stick it in a publically accessible folder on a webserver with PHP support.
-3. Run `npm install`
-4. Run `webpack --progress` to build the main javascript file. (The path to webpack will depend on how you installed the webpack module with npm)
-5. Update the `config.js` file to point to your HomeAssistant installation.
+2. Clone the repo and stick it in a publically accessible folder on a webserver.
+3. Update the `config.js` file to point to your HomeAssistant installation.
 _Your HomeAssistant installation must list the IP or subnet of your webserver as a trusted network._
-6. Modify the index.php file and update entities['sensor.xyz'] references to match entities within your HomeAssistant installation. If the index.php file has any references to entities that don't exist, you'll probably get a blank page. Check your browser dev tools for more info if that happens.
+4. Modify the different pages under `src/pages` and update entities['sensor.xyz'] references to match entities within your HomeAssistant installation. If the page has any references to entities that don't exist, you'll probably get a blank page. Check your browser dev tools for more info if that happens.
+5. Run `npm install`
+6. Run `webpack --progress` to build the main javascript file. (The path to webpack will depend on how you installed the webpack module with npm)
+
+Any time you make changes to a page you will have to re-run `webpack`!

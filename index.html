@@ -25,6 +25,13 @@
 		.navbar-nav>.messages-menu>.dropdown-menu>li .menu>li>a>h4 { margin-left: 0; }
 		.navbar-nav>.messages-menu>.dropdown-menu>li .menu>li>a>p { margin-left: 0; }
 		[v-cloak] { display: none; }
+		
+		.fadePage-enter-active, .fadePage-leave-active {
+			transition: opacity .75s
+		}
+		.fadePage-enter, .fadePage-leave-to {
+			opacity: 0
+		}
 	</style>
 	
 </head>
@@ -132,10 +139,10 @@
 		<ul class="sidebar-menu">
 			<li class="header">Basic</li>
 			<!-- Optionally, you can add icons to the links -->
-			<li class="active"><a href="index.php"><i class="fa fa-home"></i> <span>Dashboard</span></a></li>
-			<li><a href="climate.php"><i class="fa fa-cloud"></i> <span>Climate</span></a></li>
-			<li><a href="media.php"><i class="fa fa-music"></i> <span>Media</span></a></li>
-			<li><a href="security.php"><i class="fa fa-lock"></i> <span>Security</span></a></li>
+			<router-link tag="li" active-class="active" to="/" exact><a><i class="fa fa-home"></i> <span>Dashboard</span></a></router-link>
+			<router-link tag="li" active-class="active" to="climate" exact><a><i class="fa fa-cloud"></i> <span>Climate</span></a></router-link>
+			<router-link tag="li" active-class="active" to="media" exact><a><i class="fa fa-music"></i> <span>Media</span></a></router-link>
+			<router-link tag="li" active-class="active" to="security" exact><a><i class="fa fa-lock"></i> <span>Security</span></a></router-link>
 			<li class="treeview">
 			<a href="#"><i class="fa fa-link"></i> <span>Multilevel</span>
 				<span class="pull-right-container">
@@ -152,3 +159,38 @@
 		</section>
 		<!-- /.sidebar -->
 	</aside>
+	
+	<div class="content-wrapper">
+		<transition name="fadePage" mode="out-in">
+			<router-view></router-view>
+		</transition>
+	</div>
+	
+	</div>
+
+<script type="text/javascript" src="dist/build.js"></script>
+
+<!-- jQuery UI 1.11.4 -->
+<!-- commented out. I believe jquery ui can be removed -->
+<!-- <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script> -->
+<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+<script>
+  //$.widget.bridge('uibutton', $.ui.button);
+</script>
+<!-- Bootstrap 3.3.6 -->
+<script src="dist/js/bootstrap.min.js"></script>
+<!-- jQuery Knob Chart -->
+<script src="plugins/knob/jquery.knob.js"></script>
+<!-- Slimscroll -->
+<script src="plugins/slimScroll/jquery.slimscroll.min.js"></script>
+<script src="plugins/chartjs/Chart.min.js"></script>
+
+<script type="text/javascript" src="dist/js/app.js"></script>
+
+<script type="text/javascript">
+var app;
+var areaChartData;
+var areaChartOptions;
+</script>
+</body>
+</html>

@@ -13,6 +13,7 @@
     "moment": "^2.17.1",
     "vue": "^2.1.0",
     "vue-chartjs": "^2.5.1",
+    "vue-router": "^2.7.0",
     "vue-slider-component": "^2.1.9",
     "vue-strap": "github:wffranco/vue-strap",
     "vue-touch": "^2.0.0-beta.4",

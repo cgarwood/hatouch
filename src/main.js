@@ -1,17 +1,36 @@
 import Vue from 'vue'
+import VueRouter from 'vue-router'
 import Vuex from 'vuex'
 import VueTouch from 'vue-touch'
 import { modal } from 'vue-strap'
 import VueSlider from 'vue-slider-component'
 import moment from 'moment'
 import HomeAssistantApi from './homeassistant-api.js'
-//import App from './App.vue'
 
 var $ = require('jquery');
 
 Vue.use(Vuex);
 Vue.use(VueTouch);
+Vue.use(VueRouter);
 
+//Import Route Components
+import pgMain from './pages/pgMain.vue';
+import pgClimate from './pages/pgClimate.vue';
+import pgMedia from './pages/pgMedia.vue';
+import pgSecurity from './pages/pgSecurity.vue';
+
+//Setup Vue Routes
+const routes = [
+	{ path: '/home', component: pgMain },
+	{ path: '/', component: pgMain },
+	{ path: '/climate', component: pgClimate },
+	{ path: '/media', component: pgMedia },
+	{ path: '/security', component: pgSecurity },
+];
+
+const router = new VueRouter({routes});
+
+//Set up Vue Store
 const store = new Vuex.Store({
 	state: {
 		entities: {}
@@ -33,6 +52,7 @@ const store = new Vuex.Store({
 	}
 });
 
+//Import UI Components
 Vue.component('modal', modal);
 Vue.component('vue-slider', VueSlider);
 Vue.component('action', require('./components/action.vue'));
@@ -41,7 +61,7 @@ Vue.component('light', require('./components/light.vue'));
 
 Vue.component('camera', {
 	props: ['entity'],
-	template:'<div class="box box-primary">' +
+	template:'<div class="box box-primary" v-if="entity">' +
 				'<div class="box-header with-border">' +
 					'<h3 class="box-title">{{entity[\'attributes\'][\'friendly_name\']}}</h3>' +
 				'</div>' +
@@ -53,8 +73,8 @@ Vue.component('camera', {
 
 new Vue({
 	el: '#wrapper',
-	//render: h => h(App),
 	store,
+	router,
 	data: {
 		config : window.config,
 		time : '',
