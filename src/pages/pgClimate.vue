@@ -12,10 +12,10 @@
 			</div>
 			<div class="row">
 				<div class="col-sm-6">
-					<sensor entity_id="sensor.garage_multisensor_temperature_8_1" title="Garage Temperature" icon="fa-sun-o" color-class="bg-aqua"></sensor>
+					<sensor entity_id="sensor.garage_multisensor_temperature" title="Garage Temperature" icon="fa-sun-o" color-class="bg-aqua"></sensor>
 				</div>
 				<div class="col-sm-6">
-					<sensor entity_id="sensor.garage_multisensor_relative_humidity_8_5" title="Garage Humidity" icon="fa-tint" color-class="bg-aqua"></sensor>
+					<sensor entity_id="sensor.garage_multisensor_relative_humidity" title="Garage Humidity" icon="fa-tint" color-class="bg-aqua"></sensor>
 				</div>
 			</div>
 		</div>
