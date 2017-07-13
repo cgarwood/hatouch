@@ -1,6 +1,6 @@
 <template>
 	<div v-if="entity">
-		<v-touch v-on:press="toggleModal()" v-on:click="toggleSwitch(entity['entity_id'])">
+		<v-touch v-on:press="toggleModal()" v-on:tap="toggleSwitch(entity['entity_id'])">
 		<div class="info-box">
 			<span class="info-box-icon" v-bind:class="[(entity['state'] == 'on') ? 'bg-yellow' : 'bg-black']"><i class="fa" :class="icon"></i></span>
 			<div class="info-box-content">
@@ -17,7 +17,7 @@
 			</div>
 			<div slot="modal-body" class="modal-body">
 				Brightness: {{entity['attributes']['brightness']}}
-				<!-- <vue-slider :value="entity['attributes']['brightness']" :min="0" :max="255"></vue-slider> -->
+				<vue-slider @callback="sliderMoved" v-model="entity['attributes']['brightness']" :min="0" :max="255" :real-time="true" ref="slider" :entity_id="entity['entity_id']"></vue-slider>
 			</div>
 			<div slot="modal-footer"></div>
 		</modal>
@@ -32,7 +32,9 @@
 </template>
 
 <script>
-module.exports = {
+import _ from 'lodash';
+
+export default {
 	computed: {
 		entity() {
 			return this.$store.state.entities[this.entity_id];
@@ -59,11 +61,29 @@ module.exports = {
 		}
 	},
 	methods: {
-		toggleSwitch(entity_id) {
-			this.$parent.callService('homeassistant', 'toggle', {"entity_id":entity_id});
+		toggleSwitch: function(entity_id) {
+			this.$parent.$parent.callService('homeassistant', 'toggle', {"entity_id":entity_id});
 		},
-		toggleModal() {
+		toggleModal: function() {
 			this.modalVisible = !this.modalVisible;
+			var self = this;
+			setTimeout(function() {self.$refs.slider.refresh();}, 100);
+		},
+		sliderMoved: _.debounce(function(val) {
+			if (val > 0) {
+				var self = this;
+				console.log(val);
+				this.$parent.$parent.callService('light', 'turn_on', {"entity_id":this.entity.entity_id,"brightness":val});
+			} else {
+				this.$parent.$parent.callService('light', 'turn_off', {"entity_id":this.entity.entity_id});
+			}
+		}, 500),
+		setBrightness: function(entity_id, brightness) {
+			if (brightness > 0) {
+				this.$parent.$parent.callService('light', 'turn_on', {"entity_id":entity_id,"brightness":brightness});
+			} else {
+				this.$parent.$parent.callService('light', 'turn_off', {"entity_id":entity_id});
+			}
 		}
 	},
 	

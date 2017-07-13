@@ -7,7 +7,7 @@
 					<sensor entity_id="sensor.hallway_thermostat_temperature" title="Indoor Temperature" icon="fa-home" color-class="bg-red"></sensor>
 				</div>
 				<div class="col-sm-6">
-					<sensor entity_id="sensor.energy_meter_power_9_4" icon="fa-bolt" color-class="bg-yellow"></sensor>
+					<sensor entity_id="sensor.energy_meter_power" icon="fa-bolt" color-class="bg-yellow"></sensor>
 				</div>
 			</div>
 			<div class="row">

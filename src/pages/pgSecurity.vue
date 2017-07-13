@@ -4,20 +4,20 @@
 		<div class="col-md-6">
 			<div class="row">
 				<div class="col-sm-6">
-					<div class="info-box" v-if="entities['binary_sensor.front_door_sensor_2_0']">
+					<div class="info-box" v-if="entities['binary_sensor.front_door_sensor']">
 						<span class="info-box-icon bg-red"><i class="fa fa-home"></i></span>
 						<div class="info-box-content">
 							<span class="info-box-text">Front Door</span>
-							<span class="info-box-number">{{(entities['binary_sensor.front_door_sensor_2_0']['state'] == 'on') ? 'Open' : 'Closed'}}</span>
+							<span class="info-box-number">{{(entities['binary_sensor.front_door_sensor']['state'] == 'on') ? 'Open' : 'Closed'}}</span>
 						</div>
 					</div>
 				</div>
 				<div class="col-sm-6">
-					<div class="info-box" v-if="entities['binary_sensor.back_door_sensor_3_0']">
+					<div class="info-box" v-if="entities['binary_sensor.back_door_sensor']">
 						<span class="info-box-icon bg-green"><i class="fa fa-home"></i></span>
 						<div class="info-box-content">
 							<span class="info-box-text">Back Door</span>
-							<span class="info-box-number">{{(entities['binary_sensor.back_door_sensor_3_0']['state'] == 'on') ? 'Open' : 'Closed'}}</span>
+							<span class="info-box-number">{{(entities['binary_sensor.back_door_sensor']['state'] == 'on') ? 'Open' : 'Closed'}}</span>
 						</div>
 					</div>
 				</div>
