@@ -55,14 +55,11 @@ const store = new Vuex.Store({
 				   window.reconnectTimer=0;
 				}
 				
-				var id = new Date();
-				id = id.getTime();
-				
 				//Get all current states
 				ws.send('{"id":"100","type":"get_states"}');
 				
 				//Subscribe to all events on the HomeAssistant Events Bus
-				ws.send('{"id":"'+id+'","type":"subscribe_events"}');
+				ws.send('{"id":"101","type":"subscribe_events"}');
 			}
 			ws.onmessage = function(e) {
 				var data = JSON.parse(e.data);

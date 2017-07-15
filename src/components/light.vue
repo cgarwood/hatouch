@@ -97,8 +97,6 @@ export default {
 	
 	watch: {
 		entity: function(val) {
-			console.log('entity changed');
-			console.log(val);
 			this.iconClass = this.icon;
 		}
 	}
