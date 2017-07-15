@@ -5,7 +5,6 @@ import VueTouch from 'vue-touch'
 import { modal } from 'vue-strap'
 import VueSlider from 'vue-slider-component'
 import moment from 'moment'
-import HomeAssistantApi from './homeassistant-api.js'
 
 var $ = require('jquery');
 
@@ -19,7 +18,7 @@ import pgClimate from './pages/pgClimate.vue';
 import pgMedia from './pages/pgMedia.vue';
 import pgSecurity from './pages/pgSecurity.vue';
 
-//Setup Vue Routes
+//Set up Vue Routes
 const routes = [
 	{ path: '/home', component: pgMain },
 	{ path: '/', component: pgMain },
@@ -29,6 +28,10 @@ const routes = [
 ];
 
 const router = new VueRouter({routes});
+
+//Set up Websocket
+var ws;
+var reconnectTimer=0;
 
 //Set up Vue Store
 const store = new Vuex.Store({
@@ -42,12 +45,50 @@ const store = new Vuex.Store({
 	},
 	actions: {
 		CONNECT({commit}) {
-			const haapi = new HomeAssistantApi(window.config['ha_url']);
-			haapi.on('entity', (entity) => {
-				commit('UPDATE_ENTITY', entity);
-			});
-			haapi.connect();
-			haapi.setEventStreamListener();
+			ws = new WebSocket('wss://'+window.config['ha_url']+'/api/websocket');
+			ws.onopen = function() {
+				app.$data['connectedWebsocket'] = true;
+				
+				//Clear the reconnect timer if we are reconnecting
+				if (window.reconnectTimer) {
+				   window.clearInterval(window.reconnectTimer);
+				   window.reconnectTimer=0;
+				}
+				
+				var id = new Date();
+				id = id.getTime();
+				
+				//Get all current states
+				ws.send('{"id":"100","type":"get_states"}');
+				
+				//Subscribe to all events on the HomeAssistant Events Bus
+				ws.send('{"id":"'+id+'","type":"subscribe_events"}');
+			}
+			ws.onmessage = function(e) {
+				var data = JSON.parse(e.data);
+				console.log(data);
+				if (data.type == "result" && data.id == 100) {
+					//Initial state grab
+					for (var i = 0; i < data.result.length; i++) {
+						commit('UPDATE_ENTITY', data.result[i]);
+					}
+				}
+				if (data.type == "event") {
+					if (data.event.event_type == "state_changed") {
+						commit('UPDATE_ENTITY', data.event.data.new_state);
+					}
+				}
+			}
+			ws.onclose = function() {
+				app.$data['connectedWebsocket'] = false;
+				
+				console.log('Websocket Disconnected. Attempting to reconnect.');
+				
+				//Start a timer to reconnect, if one hasn't already been started
+				if(!window.reconnectTimer){
+					window.reconnectTimer=setInterval(function(){connectWebsocket()}, 5000);
+				}
+			}
 		}
 	}
 });
@@ -71,12 +112,14 @@ Vue.component('camera', {
 		'</div>',
 });
 
-new Vue({
+const app = new Vue({
 	el: '#wrapper',
 	store,
 	router,
 	data: {
 		config : window.config,
+		loaded : false,
+		connectedWebsocket : false,
 		time : '',
 		date : '',
 	},
@@ -95,8 +138,17 @@ new Vue({
 			this.date = moment().format("M/D/YYYY");
 		},
 		callService(domain, service, data, callback) {
-			const haapi = new HomeAssistantApi(window.config['ha_url']);
-			haapi.callService(domain, service, data, callback);
+			var id = new Date();
+			id = id.getTime();
+			
+			var wsData = {
+				"id": id,
+				"type" : "call_service",
+				"domain" : domain,
+				"service" : service,
+				"service_data" : data
+			}
+			ws.send(JSON.stringify(wsData));
 		},
 	},
 	mounted: function() {
