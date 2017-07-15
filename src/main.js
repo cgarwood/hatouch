@@ -113,7 +113,7 @@ Vue.component('camera', {
 });
 
 const app = new Vue({
-	el: '#wrapper',
+	el: '#app',
 	store,
 	router,
 	data: {
@@ -154,5 +154,6 @@ const app = new Vue({
 	mounted: function() {
 		this.getTime();
 		setInterval(this.getTime, 1000);
+		this.$data['loaded'] = true;
 	}
 })

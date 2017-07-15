@@ -22,6 +22,10 @@
 <!--	<script type="text/javascript" src="homeassistant-api.js"></script> -->
 
 	<style type="text/css">
+		body {
+			background-color: #ecf0f5;
+		}
+		
 		.navbar-nav>.messages-menu>.dropdown-menu>li .menu>li>a>h4 { margin-left: 0; }
 		.navbar-nav>.messages-menu>.dropdown-menu>li .menu>li>a>p { margin-left: 0; }
 		[v-cloak] { display: none; }
@@ -32,12 +36,30 @@
 		.fadePage-enter, .fadePage-leave-to {
 			opacity: 0
 		}
+		.lockscreen-wrapper {
+			background-color: transparent;
+		}
+		.wrapper.fullscreen {
+			background-color: #ecf0f5;
+			margin-left: 0 !important;
+		}
 	</style>
 	
 </head>
 <body class="hold-transition skin-blue sidebar-mini sidebar-collapse fixed">
+<div id="app">
 
-	<div class="wrapper" id="wrapper">
+	<div class="wrapper fullscreen" v-if="!loaded">
+		<div class="lockscreen-wrapper">
+			<div class="lockscreen-logo">Loading</div>
+
+			<p class="text-center" style="font-size: 36px; margin-bottom: 24px;">
+				<i class="fa fa-refresh fa-spin"></i>
+			</p>
+		</div>
+	</div>
+	
+	<div class="wrapper" id="wrapper" v-cloak>
 
 	<!-- Main Header -->
 	<header class="main-header">
@@ -167,7 +189,7 @@
 	</div>
 	
 	</div>
-
+</div>
 <script type="text/javascript" src="dist/build.js"></script>
 
 <!-- Bootstrap 3.3.6 -->
