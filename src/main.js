@@ -36,15 +36,31 @@ var reconnectTimer=0;
 //Set up Vue Store
 const store = new Vuex.Store({
 	state: {
-		entities: {}
+		entities: {},
+		notifications: []
 	},
 	mutations: {
 		UPDATE_ENTITY(state, entity) {
 			Vue.set(state.entities, entity['entity_id'], entity);
+		},
+		ADD_NOTIFICATION(state, notification) {
+			var lsNotifications = JSON.parse(localStorage.getItem("notifications"));
+			lsNotifications.push(notification);
+			localStorage.setItem("notifications", JSON.stringify(lsNotifications));
+			state.notifications = lsNotifications;
+			
+			console.log(lsNotifications);
+		},
+		UPDATE_NOTIFICATIONS(state) {
+			state.notifications = JSON.parse(localStorage.getItem("notifications"));
 		}
 	},
 	actions: {
 		CONNECT({commit}) {
+			//Initialize local storage for notifications
+			if (!localStorage.getItem("notifications")) { localStorage.setItem("notifications","[]"); }
+			commit("UPDATE_NOTIFICATIONS");
+			
 			ws = new WebSocket('wss://'+window.config['ha_url']+'/api/websocket');
 			ws.onopen = function() {
 				app.$data['connectedWebsocket'] = true;
@@ -73,6 +89,11 @@ const store = new Vuex.Store({
 				if (data.type == "event") {
 					if (data.event.event_type == "state_changed") {
 						commit('UPDATE_ENTITY', data.event.data.new_state);
+					}
+					if (data.event.event_type == "call_service") {
+						if (data.event.data.domain == "notify" && data.event.data.service == "hatouch") {
+							commit('ADD_NOTIFICATION', data.event.data.service_data);
+						}
 					}
 				}
 			}
@@ -123,6 +144,9 @@ const app = new Vue({
 	computed: {
 		entities() {
 			return this.$store.state.entities;
+		},
+		notifications() {
+			return this.$store.state.notifications;
 		}
 	},
 	created: function() {
