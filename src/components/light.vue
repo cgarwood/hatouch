@@ -2,7 +2,7 @@
 	<div v-if="entity">
 		<v-touch v-on:press="toggleModal()" v-on:tap="toggleSwitch(entity['entity_id'])">
 		<div class="info-box">
-			<span class="info-box-icon" v-bind:class="[(entity['state'] == 'on') ? 'bg-yellow' : 'bg-black']"><i class="fa" :class="icon"></i></span>
+			<span class="info-box-icon" v-bind:class="[(entity['state'] == 'on') ? 'bg-yellow' : 'bg-black']"><i class="fa" :class="iconClass"></i></span>
 			<div class="info-box-content">
 				<span class="info-box-text">{{(title == undefined) ? entity['attributes']['friendly_name'] : title}}</span>
 				<span class="info-box-number">{{entity['state']}}</span>
@@ -63,6 +63,7 @@ export default {
 	methods: {
 		toggleSwitch: function(entity_id) {
 			this.$parent.$parent.callService('homeassistant', 'toggle', {"entity_id":entity_id});
+			this.iconClass = "fa-spinner fa-spin";
 		},
 		toggleModal: function() {
 			this.modalVisible = !this.modalVisible;
@@ -89,7 +90,16 @@ export default {
 	
 	data: function() {
 		return {
-			modalVisible: false
+			modalVisible: false,
+			iconClass: this.icon
+		}
+	},
+	
+	watch: {
+		entity: function(val) {
+			console.log('entity changed');
+			console.log(val);
+			this.iconClass = this.icon;
 		}
 	}
 }

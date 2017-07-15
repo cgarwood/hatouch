@@ -136,7 +136,8 @@
 
 					<p>
 					{{config['location']}}
-					<small>Connected to HomeAssistant<br>{{config['ha_url']}}</small>
+					<small v-if="connectedWebsocket">Connected to HomeAssistant<br>{{config['ha_url']}}</small>
+					<small v-if="!connectedWebsocket">HomeAssistant Disconnected</small>
 					</p>
 				</li>
 				<!-- Menu Footer-->
