@@ -5,12 +5,20 @@ import VueTouch from 'vue-touch'
 import { modal } from 'vue-strap'
 import VueSlider from 'vue-slider-component'
 import moment from 'moment'
+import VueTimeago from 'vue-timeago'
 
 var $ = require('jquery');
 
 Vue.use(Vuex);
 Vue.use(VueTouch);
 Vue.use(VueRouter);
+Vue.use(VueTimeago, {
+  name: 'timeago',
+  locale: 'en-US',
+  locales: {
+    'en-US': require('vue-timeago/locales/en-US.json')
+  }
+});
 
 //Import Route Components
 import pgMain from './pages/pgMain.vue';
@@ -45,7 +53,11 @@ const store = new Vuex.Store({
 		},
 		ADD_NOTIFICATION(state, notification) {
 			var lsNotifications = JSON.parse(localStorage.getItem("notifications"));
-			lsNotifications.push(notification);
+			notification.timestamp = new Date();
+			notification.timestamp = notification.timestamp.getTime();
+			notification.read = false;
+			
+			lsNotifications.unshift(notification);
 			localStorage.setItem("notifications", JSON.stringify(lsNotifications));
 			state.notifications = lsNotifications;
 			
@@ -53,6 +65,8 @@ const store = new Vuex.Store({
 		},
 		UPDATE_NOTIFICATIONS(state) {
 			state.notifications = JSON.parse(localStorage.getItem("notifications"));
+			
+			console.log(JSON.parse(localStorage.getItem("notifications")));
 		}
 	},
 	actions: {
@@ -154,7 +168,6 @@ const app = new Vue({
 	},
 	methods: {
 		getTime() {
-			var self = this;
 			this.time = moment().format("h:mm:ssa");
 			this.date = moment().format("M/D/YYYY");
 		},
@@ -176,5 +189,5 @@ const app = new Vue({
 		this.getTime();
 		setInterval(this.getTime, 1000);
 		this.$data['loaded'] = true;
-	}
+	},
 })

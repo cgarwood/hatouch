@@ -96,7 +96,15 @@
 				<li>
 					<!-- inner menu: contains the messages -->
 					<ul class="menu">
-					
+					<li v-for="notification in notifications">
+						<a href="#">
+							<h4>
+								<i :class="notification.data.class"></i> {{notification.title}}
+								<small><i class="fa fa-clock-o"></i> <timeago :since="notification.timestamp" :auto-update="60" :max-time="86400 * 14"></span></small>
+							</h4>
+							<p>{{notification.message}}</p>
+						</a>
+					</li>
 					<li>
 						<a href="#">
 						<h4>
