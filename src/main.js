@@ -184,6 +184,10 @@ const app = new Vue({
 			}
 			ws.send(JSON.stringify(wsData));
 		},
+		clearNotifications() {
+			localStorage.setItem("notifications","[]");
+			this.$store.commit("UPDATE_NOTIFICATIONS");
+		}
 	},
 	mounted: function() {
 		this.getTime();

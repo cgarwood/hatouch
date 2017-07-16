@@ -72,9 +72,7 @@
 						<h3 class="box-title">Temperature History</h3>
 						</div>
 						<div class="box-body">
-						<div class="chart">
-							<canvas id="areaChart" style="height: 108px;" height="108"></canvas>
-						</div>
+
 						</div>
 					</div>
 				</div>

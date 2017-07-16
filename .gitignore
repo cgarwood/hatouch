@@ -1,7 +1,5 @@
 .DS_Store
 node_modules/
 npm-debug.log
-notifications/*
-!notifications/.gitkeep
 config.js
 dist/build.js
