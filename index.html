@@ -30,7 +30,7 @@
 		body:not(.sidebar-collapse) .info-box-content { margin-left: 16px; }
 		
 		.navbar-nav>.messages-menu>.dropdown-menu>li .menu>li>a>h4 { margin-left: 0; }
-		.navbar-nav>.messages-menu>.dropdown-menu>li .menu>li>a>p { margin-left: 0; }
+		.navbar-nav>.messages-menu>.dropdown-menu>li .menu>li>a>p { margin-left: 0; white-space: normal; }
 		[v-cloak] { display: none; }
 		
 		.fadePage-enter-active, .fadePage-leave-active {
@@ -89,41 +89,22 @@
 				<!-- Menu toggle button -->
 				<a href="#" class="dropdown-toggle" data-toggle="dropdown">
 				<i class="fa fa-envelope-o"></i>
-				<span class="label label-warning">{{notifications.length}}</span>
+				<span class="label label-warning" v-if="notifications.length > 0">{{notifications.length}}</span>
 				</a>
 				<ul class="dropdown-menu">
-				<li class="header">You have 2 messages</li>
+				<li class="header">You have {{notifications.length}} messages</li>
 				<li>
 					<!-- inner menu: contains the messages -->
 					<ul class="menu">
-					<li v-for="notification in notifications">
-						<a href="#">
-							<h4>
-								<i :class="notification.data.class"></i> {{notification.title}}
-								<small><i class="fa fa-clock-o"></i> <timeago :since="notification.timestamp" :auto-update="60" :max-time="86400 * 14"></span></small>
-							</h4>
-							<p>{{notification.message}}</p>
-						</a>
-					</li>
-					<li>
-						<a href="#">
-						<h4>
-							<i class="fa fa-trash text-green"></i> Garbage Day
-							<small><i class="fa fa-clock-o"></i> 5 mins</small>
-						</h4>
-						<p>Don't forget to take out the trash!</p>
-						</a>
-					</li>
-					<li>
-						<a href="#">
-						<h4>
-							Door Left Open
-							<small><i class="fa fa-clock-o"></i> 15 mins</small>
-						</h4>
-						<p>The Front Door has been open for more than 15 minutes with HVAC still on.</p>
-						</a>
-					</li>
-					
+						<li v-for="notification in notifications">
+							<a href="#">
+								<h4>
+									<i class="fa" :class="notification.data.icon"></i> {{notification.title}}
+									<small><i class="fa fa-clock-o"></i> <timeago :since="notification.timestamp" :auto-update="60" :max-time="86400 * 14"></span></small>
+								</h4>
+								<p>{{notification.message}}</p>
+							</a>
+						</li>					
 					</ul>
 					<!-- /.menu -->
 				</li>
