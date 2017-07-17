@@ -25,6 +25,7 @@ import pgMain from './pages/pgMain.vue';
 import pgClimate from './pages/pgClimate.vue';
 import pgMedia from './pages/pgMedia.vue';
 import pgSecurity from './pages/pgSecurity.vue';
+import pgScreensaver from './pages/pgScreensaver.vue';
 
 //Set up Vue Routes
 const routes = [
@@ -33,6 +34,7 @@ const routes = [
 	{ path: '/climate', component: pgClimate },
 	{ path: '/media', component: pgMedia },
 	{ path: '/security', component: pgSecurity },
+	{ path: '/screensaver', component: pgScreensaver }
 ];
 
 const router = new VueRouter({routes});
@@ -53,20 +55,18 @@ const store = new Vuex.Store({
 		},
 		ADD_NOTIFICATION(state, notification) {
 			var lsNotifications = JSON.parse(localStorage.getItem("notifications"));
+			//Add Timestamp
 			notification.timestamp = new Date();
 			notification.timestamp = notification.timestamp.getTime();
+			//Mark as unread
 			notification.read = false;
-			
+			//Add notification to list
 			lsNotifications.unshift(notification);
 			localStorage.setItem("notifications", JSON.stringify(lsNotifications));
-			state.notifications = lsNotifications;
-			
-			console.log(lsNotifications);
+			state.notifications = lsNotifications;			
 		},
 		UPDATE_NOTIFICATIONS(state) {
 			state.notifications = JSON.parse(localStorage.getItem("notifications"));
-			
-			console.log(JSON.parse(localStorage.getItem("notifications")));
 		}
 	},
 	actions: {
@@ -118,7 +118,7 @@ const store = new Vuex.Store({
 				
 				//Start a timer to reconnect, if one hasn't already been started
 				if(!window.reconnectTimer){
-					window.reconnectTimer=setInterval(function(){connectWebsocket()}, 5000);
+					window.reconnectTimer=setInterval(function(){commit('CONNECT');}, 5000);
 				}
 			}
 		}
@@ -153,7 +153,19 @@ const app = new Vue({
 		loaded : false,
 		connectedWebsocket : false,
 		time : '',
+		timeVars : {
+			hour : 0,
+			min: 0,
+			sec: 0,
+			ampm: 'am',
+			month: 1,
+			day: 1,
+			year: 2017,
+			monthText: 'January',
+			dayOfWeek: 'Sunday'
+		},
 		date : '',
+		idleTime : 0,
 	},
 	computed: {
 		entities() {
@@ -161,6 +173,10 @@ const app = new Vue({
 		},
 		notifications() {
 			return this.$store.state.notifications;
+		},
+		fullscreenView() {
+			if (this.$route.path == "/screensaver") { return true; }
+			else { return false; }
 		}
 	},
 	created: function() {
@@ -170,6 +186,27 @@ const app = new Vue({
 		getTime() {
 			this.time = moment().format("h:mm:ssa");
 			this.date = moment().format("M/D/YYYY");
+			this.timeVars.hour = moment().format("h");
+			this.timeVars.min = moment().format("mm");
+			this.timeVars.sec = moment().format("ss");
+			this.timeVars.ampm = moment().format("a");
+			this.timeVars.month = moment().format("M");
+			this.timeVars.day = moment().format("D");
+			this.timeVars.year = moment().format("YYYY");
+			this.timeVars.monthText = moment().format("MMMM");
+			this.timeVars.dayOfWeek = moment().format("dddd");
+		},
+		idleIncrement() {
+			if (this.$route.path != '/screensaver') {
+				this.idleTime++;
+				if (this.idleTime > 300) {
+					this.idleTime = 0;
+					this.$router.replace('/screensaver');
+				}
+			}
+		},
+		idleReset() {
+			this.idleTime = 0;
 		},
 		callService(domain, service, data, callback) {
 			var id = new Date();
@@ -192,6 +229,7 @@ const app = new Vue({
 	mounted: function() {
 		this.getTime();
 		setInterval(this.getTime, 1000);
+		setInterval(this.idleIncrement, 1000);
 		this.$data['loaded'] = true;
 	},
 })

@@ -48,7 +48,7 @@
 	
 </head>
 <body class="hold-transition skin-blue sidebar-mini sidebar-collapse fixed">
-<div id="app">
+<div id="app" @mousemove="idleReset">
 
 	<div class="wrapper fullscreen" v-if="!loaded">
 		<div class="lockscreen-wrapper">
@@ -60,7 +60,13 @@
 		</div>
 	</div>
 	
-	<div class="wrapper" id="wrapper" v-cloak>
+	<div class="wrapper fullscreen" v-if="fullscreenView" v-cloak>
+		<transition name="fadePage" mode="out-in">
+			<router-view></router-view>
+		</transition>
+	</div>
+	
+	<div class="wrapper" id="wrapper" v-if="!fullscreenView" v-cloak>
 
 	<!-- Main Header -->
 	<header class="main-header">
@@ -167,6 +173,7 @@
 				<li><a href="#">Link in level 2</a></li>
 			</ul>
 			</li>
+			<router-link tag="li" active-class="active" to="screensaver" exact><a><i class="fa fa-lock"></i> <span>Screensaver (temp)</span></a></router-link>
 		</ul>
 		<!-- /.sidebar-menu -->
 		</section>
