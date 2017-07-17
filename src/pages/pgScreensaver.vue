@@ -7,7 +7,7 @@
 			</div>
 		</transition>
 		<transition name="fadePage">
-			<div class="page weather" v-on:click="loadDashboard" v-show="currentSlide == photos.length" style="background-image: url('/hatouch/images/weather_backgrounds/thunderstorm.jpg');">
+			<div class="page weather" v-on:click="loadDashboard" v-show="currentSlide == photos.length" :style="{ 'background-image': 'url(images/weather_backgrounds/' + weatherBackground + ')' }">
 				<div class="row">
 					<div class="col-sm-6">
 						<h1>Current Conditions</h1>
@@ -52,6 +52,58 @@ module.exports = {
 		},
 		currentTime() {
 			return this.$parent.timeVars;
+		},
+		weatherBackground() {
+			var mapping = {
+				'chanceflurries' : 'snow.jpg',
+				'chancerain' : 'rain.jpg',
+				'chancesleet' : 'rain.jpg',
+				'chancesnow' : 'snow.jpg',
+				'chancetstorms' : 'thunderstorm.jpg',
+				'clear' : 'sunny.jpg',
+				'cloudy' : 'cloudy.jpg',
+				'flurries' : 'snow.jpg',
+				'fog' : 'fog.jpg',
+				'hazy' : 'fog.jpg',
+				'mostlycloudy' : 'partlycloudy.jpg',
+				'mostlysunny' : 'partlycloudy.jpg',
+				'partlycloudy' : 'partlycloudy.jpg',
+				'partlysunny' : 'partlycloudy.jpg',
+				'sleet' : 'rain.jpg',
+				'rain' : 'rain.jpg',
+				'snow' : 'snow.jpg',
+				'sunny' : 'sunny.jpg',
+				'tstorms' : 'thunderstorm.jpg',
+				'nt_chanceflurries' : 'nt_snow.jpg',
+				'nt_chancerain' : 'nt_rain.jpg',
+				'nt_chancesleet' : 'nt_rain.jpg',
+				'nt_chancesnow' : 'nt_snow.jpg',
+				'nt_chancetstorms' : 'nt_thunderstorm.jpg',
+				'nt_clear' : 'nt_sunny.jpg',
+				'nt_cloudy' : 'nt_cloudy.jpg',
+				'nt_flurries' : 'nt_snow.jpg',
+				'nt_fog' : 'nt_fog.jpg',
+				'nt_hazy' : 'nt_fog.jpg',
+				'nt_mostlycloudy' : 'nt_cloudy.jpg',
+				'nt_mostlysunny' : 'nt_sunny.jpg',
+				'nt_partlycloudy' : 'nt_cloudy.jpg',
+				'nt_partlysunny' : 'nt_cloudy.jpg',
+				'nt_sleet' : 'nt_rain.jpg',
+				'nt_rain' : 'nt_rain.jpg',
+				'nt_snow' : 'nt_snow.jpg',
+				'nt_sunny' : 'nt_sunny.jpg',
+				'nt_tstorms' : 'nt_thunderstorm.jpg',
+			}
+			if (this.$store.state.entities['sensor.pws_weather'] !== undefined) {
+				console.log(this.$store.state.entities['sensor.pws_weather']);
+				var string = this.$store.state.entities['sensor.pws_weather']['attributes']['entity_picture'].split('/');
+				var icon = string[string.length-1].split('.');
+				if (mapping[icon[0]] !== undefined) {
+					return mapping[icon[0]];
+				} else {
+					return 'partlycloudy.jpg';
+				}
+			} else { return 'partlycloudy.jpg'; }
 		}
 	},
 	data: function() {
@@ -150,5 +202,7 @@ module.exports = {
 	.weather h1 {
 		color: white;
 		margin-bottom: 48px;
+		font-weight: bold;
+		text-shadow: 2px 2px 2px rgba(0, 0, 0, 1);
 	}
 </style>
