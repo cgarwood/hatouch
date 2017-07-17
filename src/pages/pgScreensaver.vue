@@ -12,6 +12,11 @@
 					<div class="col-sm-6">
 						<h1>Current Conditions</h1>
 						<div class="row">
+							<div class="col-sm-12">
+								<sensor entity_id="sensor.pws_weather" color-class="bg-yellow"></sensor>
+							</div>
+						</div>
+						<div class="row">
 							<div class="col-sm-6">
 								<sensor entity_id="sensor.pws_temp_f" title="Temperature" icon="fa-sun-o" color-class="bg-red"></sensor>
 							</div>
@@ -54,6 +59,7 @@ module.exports = {
 			return this.$parent.timeVars;
 		},
 		weatherBackground() {
+			//Map wunderground icon filename to background filenames
 			var mapping = {
 				'chanceflurries' : 'snow.jpg',
 				'chancerain' : 'rain.jpg',
@@ -94,16 +100,21 @@ module.exports = {
 				'nt_sunny' : 'nt_sunny.jpg',
 				'nt_tstorms' : 'nt_thunderstorm.jpg',
 			}
+			//Make sure weather entity appears
 			if (this.$store.state.entities['sensor.pws_weather'] !== undefined) {
-				console.log(this.$store.state.entities['sensor.pws_weather']);
+				//Grab the wundergorund icon name
 				var string = this.$store.state.entities['sensor.pws_weather']['attributes']['entity_picture'].split('/');
 				var icon = string[string.length-1].split('.');
 				if (mapping[icon[0]] !== undefined) {
 					return mapping[icon[0]];
 				} else {
+					//Default background
 					return 'partlycloudy.jpg';
 				}
-			} else { return 'partlycloudy.jpg'; }
+			} else {
+				//Default background
+				return 'partlycloudy.jpg';
+			}
 		}
 	},
 	data: function() {

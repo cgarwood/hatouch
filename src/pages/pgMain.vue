@@ -72,7 +72,7 @@
 						<h3 class="box-title">Temperature History</h3>
 						</div>
 						<div class="box-body">
-
+							<iframe :src="secrets.grafana_temperature_graph" width="100%" height="104" frameborder="0"></iframe>
 						</div>
 					</div>
 				</div>
@@ -93,6 +93,9 @@ module.exports = {
 		entities() {
 			return this.$store.state.entities;
 		},
+		secrets() {
+			return this.$parent.secrets;
+		}
 	},
 }
 </script>

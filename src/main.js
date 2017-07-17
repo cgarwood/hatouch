@@ -63,7 +63,12 @@ const store = new Vuex.Store({
 			//Add notification to list
 			lsNotifications.unshift(notification);
 			localStorage.setItem("notifications", JSON.stringify(lsNotifications));
-			state.notifications = lsNotifications;			
+			state.notifications = lsNotifications;
+
+			if (notification.data.sound) {
+				var audio = new Audio('sounds/'+notification.data.sound);
+				audio.play();
+			}
 		},
 		UPDATE_NOTIFICATIONS(state) {
 			state.notifications = JSON.parse(localStorage.getItem("notifications"));
@@ -93,7 +98,7 @@ const store = new Vuex.Store({
 			}
 			ws.onmessage = function(e) {
 				var data = JSON.parse(e.data);
-				console.log(data);
+				//console.log(data);
 				if (data.type == "result" && data.id == 100) {
 					//Initial state grab
 					for (var i = 0; i < data.result.length; i++) {
@@ -150,6 +155,7 @@ const app = new Vue({
 	router,
 	data: {
 		config : window.config,
+		secrets: window.secrets,
 		loaded : false,
 		connectedWebsocket : false,
 		time : '',
