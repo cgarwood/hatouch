@@ -6,6 +6,7 @@ import { modal } from 'vue-strap'
 import VueSlider from 'vue-slider-component'
 import moment from 'moment'
 import VueTimeago from 'vue-timeago'
+import CxltToastr from 'cxlt-vue2-toastr'
 
 var $ = require('jquery');
 
@@ -19,6 +20,10 @@ Vue.use(VueTimeago, {
     'en-US': require('vue-timeago/locales/en-US.json')
   }
 });
+Vue.use(CxltToastr, {
+	position: 'bottom left',
+	timeOut: 10000
+})
 
 //Import Route Components
 import pgMain from './pages/pgMain.vue';
@@ -54,6 +59,8 @@ const store = new Vuex.Store({
 			Vue.set(state.entities, entity['entity_id'], entity);
 		},
 		ADD_NOTIFICATION(state, notification) {
+			console.log(notification);
+
 			var lsNotifications = JSON.parse(localStorage.getItem("notifications"));
 			//Add Timestamp
 			notification.timestamp = new Date();
@@ -61,14 +68,33 @@ const store = new Vuex.Store({
 			//Mark as unread
 			notification.read = false;
 			//Add notification to list
-			lsNotifications.unshift(notification);
-			localStorage.setItem("notifications", JSON.stringify(lsNotifications));
-			state.notifications = lsNotifications;
+			if (notification.persist !== false) {
+				lsNotifications.unshift(notification);
+				localStorage.setItem("notifications", JSON.stringify(lsNotifications));
+				state.notifications = lsNotifications;
+			}
 
-			if (notification.data.sound) {
-				var audio = new Audio('sounds/'+notification.data.sound);
+			if (notification.sound) {
+				var audio = new Audio('sounds/'+notification.sound);
 				audio.play();
 			}
+
+			if (!notification.type) { notification.type = 'info'; }
+			switch (notification.type) {
+				case "success":
+					app.$toast.success(notification);
+					break;
+				case "error":
+					app.$toast.error(notification);
+					break;
+				case "warning":
+					app.$toast.warn(notification);
+					break;
+				default:
+					app.$toast.info(notification);
+					break;
+			}
+
 		},
 		UPDATE_NOTIFICATIONS(state) {
 			state.notifications = JSON.parse(localStorage.getItem("notifications"));
@@ -123,7 +149,7 @@ const store = new Vuex.Store({
 				
 				//Start a timer to reconnect, if one hasn't already been started
 				if(!window.reconnectTimer){
-					window.reconnectTimer=setInterval(function(){commit('CONNECT');}, 5000);
+					window.reconnectTimer=setInterval(function(){app.$store.dispatch('CONNECT');}, 5000);
 				}
 			}
 		}

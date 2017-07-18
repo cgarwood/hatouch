@@ -19,6 +19,8 @@
 	<script src="plugins/jQuery/jquery-2.2.3.min.js"></script>
 	<script type="text/javascript" src="config.js"></script>
 
+	<link rel="stylesheet" href="node_modules/cxlt-vue2-toastr/dist/css/cxlt-vue2-toastr.css">
+
 	<style type="text/css">
 		body {
 			background-color: #ecf0f5;
@@ -103,7 +105,7 @@
 						<li v-for="notification in notifications">
 							<a href="#">
 								<h4>
-									<i v-if="notification.data && notification.data.icon" class="fa" :class="notification.data.icon"></i> {{notification.title}}
+									<i v-if="notification.icon" class="fa" :class="notification.icon"></i> {{notification.title}}
 									<small><i class="fa fa-clock-o"></i> <timeago :since="notification.timestamp" :auto-update="60" :max-time="86400 * 14"></span></small>
 								</h4>
 								<p>{{notification.message}}</p>
