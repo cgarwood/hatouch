@@ -75,8 +75,17 @@ const store = new Vuex.Store({
 			}
 
 			if (notification.sound) {
-				var audio = new Audio('sounds/'+notification.sound);
-				audio.play();
+				var audio = new Audio();
+				audio.src = 'sounds/'+notification.sound;
+				audio.addEventListener('loadedmetadata', function() {
+					console.log("Playing " + audio.src + ", for: " + audio.duration + "seconds.");
+					audio.play();
+					
+					//Delay TTS until after sound plays (Fully Kiosk Browser only)
+					if (typeof fully !== 'undefined' && typeof notification.tts !== 'undefined') {
+						setTimeout(function() { fully.textToSpeech(notification.tts); }, Math.round(audio.duration) * 1000 + 500);
+					}
+				});
 			}
 
 			if (!notification.type) { notification.type = 'info'; }
@@ -93,6 +102,11 @@ const store = new Vuex.Store({
 				default:
 					app.$toast.info(notification);
 					break;
+			}
+
+			// If TTS but no sound, play the TTS immediately (Fully Kiosk Browser only)
+			if (notification.tts && typeof notification.sound === 'undefined' && typeof fully !== 'undefined') {
+				fully.textToSpeech(notification.tts);
 			}
 
 		},
