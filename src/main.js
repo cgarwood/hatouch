@@ -176,6 +176,7 @@ Vue.component('vue-slider', VueSlider);
 Vue.component('action', require('./components/action.vue'));
 Vue.component('sensor', require('./components/sensor.vue'));
 Vue.component('light', require('./components/light.vue'));
+Vue.component('binary_sensor', require('./components/binary_sensor.vue'));
 
 Vue.component('camera', {
 	props: ['entity'],

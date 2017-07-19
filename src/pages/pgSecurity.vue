@@ -4,22 +4,10 @@
 		<div class="col-md-6">
 			<div class="row">
 				<div class="col-sm-6">
-					<div class="info-box" v-if="entities['binary_sensor.front_door_sensor']">
-						<span class="info-box-icon bg-red"><i class="fa fa-home"></i></span>
-						<div class="info-box-content">
-							<span class="info-box-text">Front Door</span>
-							<span class="info-box-number">{{(entities['binary_sensor.front_door_sensor']['state'] == 'on') ? 'Open' : 'Closed'}}</span>
-						</div>
-					</div>
+					<binary_sensor entity_id="binary_sensor.front_door_sensor" title="Front Door" on_text="Open" off_text="Closed" on_colorClass="bg-red" off_colorClass="bg-green" on_icon="fa-exclamation-circle" off_icon="fa-circle-o"></binary_sensor>
 				</div>
 				<div class="col-sm-6">
-					<div class="info-box" v-if="entities['binary_sensor.back_door_sensor']">
-						<span class="info-box-icon bg-green"><i class="fa fa-home"></i></span>
-						<div class="info-box-content">
-							<span class="info-box-text">Back Door</span>
-							<span class="info-box-number">{{(entities['binary_sensor.back_door_sensor']['state'] == 'on') ? 'Open' : 'Closed'}}</span>
-						</div>
-					</div>
+					<binary_sensor entity_id="binary_sensor.back_door_sensor" title="Back Door" on_text="Open" off_text="Closed" on_colorClass="bg-red" off_colorClass="bg-green" on_icon="fa-exclamation-circle" off_icon="fa-circle-o"></binary_sensor>
 				</div>
 			</div>
 			<div class="row">
@@ -29,15 +17,6 @@
 						<div class="info-box-content">
 							<span class="info-box-text">Front Door</span>
 							<span class="info-box-number">Unlocked</span>
-						</div>
-					</div>
-				</div>
-				<div class="col-sm-6">
-					<div class="info-box">
-						<span class="info-box-icon bg-green"><i class="fa fa-lock"></i></span>
-						<div class="info-box-content">
-							<span class="info-box-text">Back Door</span>
-							<span class="info-box-number">Locked</span>
 						</div>
 					</div>
 				</div>
