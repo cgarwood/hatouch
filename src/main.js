@@ -177,18 +177,7 @@ Vue.component('action', require('./components/action.vue'));
 Vue.component('sensor', require('./components/sensor.vue'));
 Vue.component('light', require('./components/light.vue'));
 Vue.component('binary_sensor', require('./components/binary_sensor.vue'));
-
-Vue.component('camera', {
-	props: ['entity'],
-	template:'<div class="box box-primary" v-if="entity">' +
-				'<div class="box-header with-border">' +
-					'<h3 class="box-title">{{entity[\'attributes\'][\'friendly_name\']}}</h3>' +
-				'</div>' +
-				'<div class="box-body">' +
-					'<img v-bind:src="$root.config[\'ha_url\'] + entity[\'attributes\'][\'entity_picture\']" style="height:236px; margin: 0 auto;">' +
-				'</div>' +
-		'</div>',
-});
+Vue.component('camera', require('./components/camera.vue'));
 
 const app = new Vue({
 	el: '#app',

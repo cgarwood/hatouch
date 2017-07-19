@@ -46,7 +46,7 @@
 		<div class="col-sm-6">
 			<div class="row">
 				<div class="col-sm-12">
-					<camera :entity="entities['camera.driveway_cam']"></camera>
+					<camera entity_id="camera.driveway_cam"></camera>
 				</div>
 			</div>
 		</div>
