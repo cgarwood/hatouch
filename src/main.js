@@ -68,27 +68,27 @@ const store = new Vuex.Store({
 			//Mark as unread
 			notification.read = false;
 			//Add notification to list
-			if (notification.persist !== false) {
+			if (notification.data.persist !== false) {
 				lsNotifications.unshift(notification);
 				localStorage.setItem("notifications", JSON.stringify(lsNotifications));
 				state.notifications = lsNotifications;
 			}
 
-			if (notification.sound) {
+			if (notification.data.sound) {
 				var audio = new Audio();
-				audio.src = 'sounds/'+notification.sound;
+				audio.src = 'sounds/'+notification.data.sound;
 				audio.addEventListener('loadedmetadata', function() {
 					console.log("Playing " + audio.src + ", for: " + audio.duration + "seconds.");
 					audio.play();
 					
 					//Delay TTS until after sound plays (Fully Kiosk Browser only)
-					if (typeof fully !== 'undefined' && typeof notification.tts !== 'undefined') {
-						setTimeout(function() { fully.textToSpeech(notification.tts); }, Math.round(audio.duration) * 1000 + 500);
+					if (typeof fully !== 'undefined' && typeof notification.data.tts !== 'undefined') {
+						setTimeout(function() { fully.textToSpeech(notification.data.tts); }, Math.round(audio.duration) * 1000 + 500);
 					}
 				});
 			}
 
-			if (!notification.type) { notification.type = 'info'; }
+			if (!notification.data.type) { notification.data.type = 'info'; }
 			switch (notification.type) {
 				case "success":
 					app.$toast.success(notification);
@@ -105,8 +105,8 @@ const store = new Vuex.Store({
 			}
 
 			// If TTS but no sound, play the TTS immediately (Fully Kiosk Browser only)
-			if (notification.tts && typeof notification.sound === 'undefined' && typeof fully !== 'undefined') {
-				fully.textToSpeech(notification.tts);
+			if (notification.data.tts && typeof notification.data.sound === 'undefined' && typeof fully !== 'undefined') {
+				fully.textToSpeech(notification.data.tts);
 			}
 
 		},
