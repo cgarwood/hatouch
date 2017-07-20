@@ -31,6 +31,7 @@ import pgClimate from './pages/pgClimate.vue';
 import pgMedia from './pages/pgMedia.vue';
 import pgSecurity from './pages/pgSecurity.vue';
 import pgScreensaver from './pages/pgScreensaver.vue';
+import pgConfig from './pages/pgConfig.vue';
 
 //Set up Vue Routes
 const routes = [
@@ -39,7 +40,8 @@ const routes = [
 	{ path: '/climate', component: pgClimate },
 	{ path: '/media', component: pgMedia },
 	{ path: '/security', component: pgSecurity },
-	{ path: '/screensaver', component: pgScreensaver }
+	{ path: '/screensaver', component: pgScreensaver },
+	{ path: '/config', component: pgConfig }
 ];
 
 const router = new VueRouter({routes});
@@ -184,7 +186,8 @@ const app = new Vue({
 	store,
 	router,
 	data: {
-		config : window.config,
+		config : {},
+		firstConfig : true,
 		secrets: window.secrets,
 		loaded : false,
 		connectedWebsocket : false,
@@ -224,6 +227,7 @@ const app = new Vue({
 		},
 		fullscreenView() {
 			if (this.$route.path == "/screensaver") { return true; }
+			else if (this.$route.path == "/config" && this.firstConfig == true) { return true; }
 			else { return false; }
 		}
 	},
@@ -322,5 +326,12 @@ const app = new Vue({
 		setInterval(this.getTime, 1000);
 		setInterval(this.idleIncrement, 1000);
 		this.$data['loaded'] = true;
+
+		//Get config from local storage, otherwise redirect to config page
+		if (localStorage.getItem("config") !== null) {
+			this.config = JSON.parse(localStorage.getItem("config"));
+		} else {
+			this.$router.replace('/config');
+		}
 	},
 })
