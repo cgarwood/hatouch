@@ -61,8 +61,6 @@ const store = new Vuex.Store({
 			Vue.set(state.entities, entity['entity_id'], entity);
 		},
 		ADD_NOTIFICATION(state, notification) {
-			console.log(notification);
-
 			var lsNotifications = JSON.parse(localStorage.getItem("notifications"));
 			//Add Timestamp
 			notification.timestamp = new Date();
@@ -117,15 +115,17 @@ const store = new Vuex.Store({
 		}
 	},
 	actions: {
-		CONNECT({commit}) {
+		CONNECT({commit}, config) {
 			//Initialize local storage for notifications
 			if (!localStorage.getItem("notifications")) { localStorage.setItem("notifications","[]"); }
 			commit("UPDATE_NOTIFICATIONS");
 			
-			ws = new WebSocket('wss://'+window.config['ha_url']+'/api/websocket');
+			var url = config['ha_url'];
+
+			ws = new WebSocket('wss://'+url+'/api/websocket');
 			ws.onopen = function() {
 				app.$data['connectedWebsocket'] = true;
-				
+
 				//Clear the reconnect timer if we are reconnecting
 				if (window.reconnectTimer) {
 				   window.clearInterval(window.reconnectTimer);
@@ -232,7 +232,7 @@ const app = new Vue({
 		}
 	},
 	created: function() {
-		this.$store.dispatch('CONNECT');
+//		this.$store.dispatch('CONNECT');
 		
 		//Set up HA entities from Fully Kiosk Browser
 		if (typeof fully !== 'undefined') {
@@ -325,7 +325,6 @@ const app = new Vue({
 		this.getTime();
 		setInterval(this.getTime, 1000);
 		setInterval(this.idleIncrement, 1000);
-		this.$data['loaded'] = true;
 
 		//Get config from local storage, otherwise redirect to config page
 		if (localStorage.getItem("config") !== null) {
@@ -333,5 +332,9 @@ const app = new Vue({
 		} else {
 			this.$router.replace('/config');
 		}
+
+		this.$store.dispatch('CONNECT', this.config);
+
+		this.$data['loaded'] = true;
 	},
 })

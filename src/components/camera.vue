@@ -16,10 +16,10 @@ module.exports = {
 			return this.$store.state.entities[this.entity_id];
 		},
 		config() {
-			return window.config;
+			return this.$parent.$parent.config;
 		},
 		imgSrc() {
-			return '//' + window.config['ha_url'] + this.entity['attributes']['entity_picture'];
+			return '//' + this.$parent.$parent.config['ha_url'] + this.entity['attributes']['entity_picture'];
 		}
 	},
 	props: {

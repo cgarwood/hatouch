@@ -7,10 +7,12 @@
 			</div>
 		</transition>
 		<transition name="fadePage">
-			<div class="page weather" v-on:click="loadDashboard" v-show="currentSlide == photos.length" :style="{ 'background-image': 'url(images/weather_backgrounds/' + weatherBackground + ')' }">
+			<div class="page weather" v-on:click="loadDashboard" v-if="currentSlide == photos.length" :style="{ 'background-image': 'url(images/weather_backgrounds/' + weatherBackground + ')' }">
+				<div class="row">
+					<div class="col-sm-12"><h1>Current Conditions</h1></div>
+				</div>
 				<div class="row">
 					<div class="col-sm-6">
-						<h1>Current Conditions</h1>
 						<div class="row">
 							<div class="col-sm-12">
 								<sensor entity_id="sensor.pws_weather" color-class="bg-yellow"></sensor>
@@ -133,8 +135,10 @@ module.exports = {
 		var xhr = new XMLHttpRequest();
 		xhr.open('GET', 'get_pictures.php');
 		xhr.onload = function(e) {
-			self.photos = JSON.parse(this.response);
-			self.maxSlides = self.photos.length;
+			if (JSON.parse(this.response) != null) {
+				self.photos = JSON.parse(this.response);
+				self.maxSlides = self.photos.length;
+			}
 		}
 		xhr.send();
 	},

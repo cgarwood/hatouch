@@ -15,7 +15,7 @@
 					<light entity_id="light.front_porch"></light>
 				</div>
 				<div class="col-sm-6">
-					<light entity_id="light.living_room"></light>
+					<light entity_id="light.living_room_fan_light" title="Living Room"></light>
 				</div>
 			</div>
 		</div>
@@ -62,7 +62,7 @@
 					<light entity_id="light.back_porch"></light>
 				</div>
 				<div class="col-sm-6">
-					<light entity_id="light.hallway"></light>
+					<light entity_id="light.living_room" title="Accent Lights"></light>
 				</div>
 			</div>
 			<div class="row">

@@ -1,4 +1,7 @@
-var config = {
-	"ha_url" : "https://192.168.1.1:8123", //URL to your HomeAssistant Installation
-	"location" : "Living Room" //Location for the device HATouch is running on
+// Configuration is stored in the browser's LocalStorage. This config file is now only
+// Used for storing secrets that you wouldn't want commited to a Git repo
+
+// Keep in mind, it's a .js file so it can still be read by people loading the page
+var secrets = {
+	"key" : "value"
 }
