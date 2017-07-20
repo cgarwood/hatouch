@@ -2,7 +2,10 @@
 
 A touch based interface for HomeAssistant based on the [AdminLTE](https://almsaeedstudio.com/themes/AdminLTE) dashboard template.
 
-## This is an early prototype
+## WARNING: THIS README IS OUTDATED
+I've been throwing a lot of code at this project recently and have not updated this README file in quite some time. Installation instructions, etc may not be accurate at this time. **I'll get it updated once I slow down a bit on making changes to the installation and configuration procedures.**
+
+## This is still an early prototype
 This is an early prototype. The code is a spaghetti dumpster fire mess. Lots of code is still default AdminLTE templates. The vue.js stuff is flaky. There's not a lot of components. It's not very modular yet.
 The GitHub Issues page has been populated with a number of issues/enhancements. Issues with the __help wanted__ label are things I'm not sure how to do, so unless someone from the community picks
 them up, they probably aren't getting done anytime soon. Feel free to pick up any other issues as well if you want to tackle it.
