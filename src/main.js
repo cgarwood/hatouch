@@ -67,6 +67,11 @@ const store = new Vuex.Store({
 			notification.timestamp = notification.timestamp.getTime();
 			//Mark as unread
 			notification.read = false;
+
+			if (typeof notification.data === 'undefined') {
+				notification.data = {persist : true};
+			}
+
 			//Add notification to list
 			if (notification.data.persist !== false) {
 				lsNotifications.unshift(notification);
@@ -74,41 +79,41 @@ const store = new Vuex.Store({
 				state.notifications = lsNotifications;
 			}
 
-			if (notification.data.sound) {
-				var audio = new Audio();
-				audio.src = 'sounds/'+notification.data.sound;
-				audio.addEventListener('loadedmetadata', function() {
-					console.log("Playing " + audio.src + ", for: " + audio.duration + "seconds.");
-					audio.play();
-					
-					//Delay TTS until after sound plays (Fully Kiosk Browser only)
-					if (typeof fully !== 'undefined' && typeof notification.data.tts !== 'undefined') {
-						setTimeout(function() { fully.textToSpeech(notification.data.tts); }, Math.round(audio.duration) * 1000 + 500);
-					}
-				});
-			}
+			if (typeof notification.data !== 'undefined') {
+				if (notification.data.sound) {
+					var audio = new Audio();
+					audio.src = 'sounds/'+notification.data.sound;
+					audio.addEventListener('loadedmetadata', function() {
+						audio.play();
+						
+						//Delay TTS until after sound plays (Fully Kiosk Browser only)
+						if (typeof fully !== 'undefined' && typeof notification.data.tts !== 'undefined') {
+							setTimeout(function() { fully.textToSpeech(notification.data.tts); }, Math.round(audio.duration) * 1000 + 500);
+						}
+					});
+				}
 
-			if (!notification.data.type) { notification.data.type = 'info'; }
-			switch (notification.type) {
-				case "success":
-					app.$toast.success(notification);
-					break;
-				case "error":
-					app.$toast.error(notification);
-					break;
-				case "warning":
-					app.$toast.warn(notification);
-					break;
-				default:
-					app.$toast.info(notification);
-					break;
-			}
+				if (!notification.data.type) { notification.data.type = 'info'; }
+				switch (notification.data.type) {
+					case "success":
+						app.$toast.success(notification);
+						break;
+					case "error":
+						app.$toast.error(notification);
+						break;
+					case "warning":
+						app.$toast.warn(notification);
+						break;
+					default:
+						app.$toast.info(notification);
+						break;
+				}
 
-			// If TTS but no sound, play the TTS immediately (Fully Kiosk Browser only)
-			if (notification.data.tts && typeof notification.data.sound === 'undefined' && typeof fully !== 'undefined') {
-				fully.textToSpeech(notification.data.tts);
+				// If TTS but no sound, play the TTS immediately (Fully Kiosk Browser only)
+				if (notification.data.tts && typeof notification.data.sound === 'undefined' && typeof fully !== 'undefined') {
+					fully.textToSpeech(notification.data.tts);
+				}
 			}
-
 		},
 		UPDATE_NOTIFICATIONS(state) {
 			state.notifications = JSON.parse(localStorage.getItem("notifications"));
@@ -160,12 +165,12 @@ const store = new Vuex.Store({
 			}
 			ws.onclose = function() {
 				app.$data['connectedWebsocket'] = false;
-				
+				var config = app.$data['config'];
 				console.log('Websocket Disconnected. Attempting to reconnect.');
 				
 				//Start a timer to reconnect, if one hasn't already been started
 				if(!window.reconnectTimer){
-					window.reconnectTimer=setInterval(function(){app.$store.dispatch('CONNECT');}, 5000);
+					window.reconnectTimer=setInterval(function(){app.$store.dispatch('CONNECT', config);}, 5000);
 				}
 			}
 		}
@@ -216,7 +221,8 @@ const app = new Vue({
 			ip4_address: '',
 			ip6_address: '',
 			mac_address: '',
-		}
+		},
+		'notificationModalVisible' : false
 	},
 	computed: {
 		entities() {
@@ -229,6 +235,10 @@ const app = new Vue({
 			if (this.$route.path == "/screensaver") { return true; }
 			else if (this.$route.path == "/config" && this.firstConfig == true) { return true; }
 			else { return false; }
+		},
+		connectedWebsocketBgClass() {
+			if (!this.connectedWebsocket) { return 'bg-red'; }
+			//else { return 'bg-aqua'; }
 		}
 	},
 	created: function() {

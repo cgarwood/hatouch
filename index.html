@@ -101,7 +101,7 @@
 				<li>
 					<!-- inner menu: contains the messages -->
 					<ul class="menu">
-						<li v-for="notification in notifications">
+						<li v-for="notification in notifications" v-on:click="showNotificationModal(notification)">
 							<a href="#">
 								<h4>
 									<i v-if="notification.data.icon" class="fa" :class="notification.data.icon"></i> {{notification.title}}
@@ -119,14 +119,15 @@
 			<!-- /.messages-menu -->
 
 			<!-- User Account Menu -->
-			<li class="dropdown user user-menu">
+			<li class="dropdown user user-menu" :class="connectedWebsocketBgClass">
 				<!-- Menu Toggle Button -->
 				<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+				<i v-if="!connectedWebsocket" class="fa fa-exclamation-triangle"></i>
 				<span>{{config['location']}}</span>
 				</a>
 				<ul class="dropdown-menu">
 				<!-- The user image in the menu -->
-				<li class="user-header">
+				<li class="user-header" :class="connectedWebsocketBgClass">
 					<p>
 					{{config['location']}}
 					<small v-if="connectedWebsocket">Connected to HomeAssistant<br>{{config['ha_url']}}</small>
@@ -185,6 +186,7 @@
 	
 	</div>
 </div>
+
 <script type="text/javascript" src="dist/build.js"></script>
 
 <!-- Bootstrap 3.3.6 -->
