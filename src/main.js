@@ -241,16 +241,6 @@ const app = new Vue({
 			//else { return 'bg-aqua'; }
 		}
 	},
-	created: function() {
-//		this.$store.dispatch('CONNECT');
-		
-		//Set up HA entities from Fully Kiosk Browser
-		if (typeof fully !== 'undefined') {
-			var self = this;
-			//setInterval(self.updateDeviceEntities(), 60000);
-			self.updateDeviceEntities();
-		}
-	},
 	methods: {
 		getTime() {
 			this.time = moment().format("h:mm:ssa");
@@ -264,6 +254,8 @@ const app = new Vue({
 			this.timeVars.year = moment().format("YYYY");
 			this.timeVars.monthText = moment().format("MMMM");
 			this.timeVars.dayOfWeek = moment().format("dddd");
+
+			this.idleIncrement();
 		},
 		idleIncrement() {
 			if (this.$route.path != '/screensaver') {
@@ -296,45 +288,62 @@ const app = new Vue({
 		},
 		updateDeviceEntities() {
 			//TODO: Update battery info on a timer. Update network info when network disconnected or reconnected. Update is_plugged on event listener
+			this.updateDevicePower();
+			this.updateDeviceNetwork();
+			this.updateDeviceScreen();
 
-			//Grab device data from Fully Kiosk Browser & use HA REST API to send the data. Update on a timer.
+			var self = this;
+			setInterval(self.updateDevicePower, 900000);
+			setInterval(self.updateDeviceScreen, 900000);
+
+			//Pending support info from Fully Kiosk Browser. Docs show surrounding functions in quotes, but it doesn't seem to be calling them. Also not sure what the scope is.
+			//fully.bind('unplugged', 'app.updateDevicePower();');
+			//fully.bind('pluggedAC', 'app.updateDevicePower();');
+			//fully.bind('pluggedUSB', 'app.updateDevicePower();');
+		},
+		updateDevicePower() {
 			this.device.battery_level = fully.getBatteryLevel();
 			this.device.is_plugged = fully.isPlugged();
-			this.device.screen_brightness = fully.getScreenBrightness();
-			this.device.screen_on = fully.getScreenOn();
+			
+			var self = this;
+			var xhr1 = new XMLHttpRequest();
+			xhr1.open('POST', 'https://' + self.config.ha_url + '/api/states/binary_sensor.hatouch_'+self.config.entity_id+'_is_plugged');
+			xhr1.send(JSON.stringify({'state': (self.device.is_plugged  == true) ? 'on' : 'off'}));
+			var xhr2 = new XMLHttpRequest();
+			xhr2.open('POST', 'https://' + self.config.ha_url + '/api/states/sensor.hatouch_'+self.config.entity_id+'_battery_level');
+			xhr2.send(JSON.stringify({'state': self.device.battery_level}));
+		},
+		updateDeviceNetwork() {
 			this.device.ip4_address = fully.getIp4Address();
 			this.device.ip6_address = fully.getIp6Address();
 			this.device.mac_address = fully.getMacAddress();
 			this.device.wifi_ssid = fully.getWifiSsid();
-
-			//Update HomeAssistant Entities
+			
 			var self = this;
 			var xhr = new XMLHttpRequest();
-			xhr.open('POST', 'https://' + window.config.ha_url + '/api/states/sensor.hatouch_'+window.config.entity_id+'_network');
+			xhr.open('POST', 'https://' + self.config.ha_url + '/api/states/sensor.hatouch_'+self.config.entity_id+'_network');
 			xhr.send(JSON.stringify({'state': '', 'attributes' : {
 				'ip4_address' : self.device.ip4_address,
 				'ip6_address' : self.device.ip6_address,
 				'mac_address' : self.device.mac_address,
 				'wifi_ssid' : self.device.wifi_ssid
 			}}));
-			var xhr2 = new XMLHttpRequest();
-			xhr2.open('POST', 'https://' + window.config.ha_url + '/api/states/binary_sensor.hatouch_'+window.config.entity_id+'_screen');
-			xhr2.send(JSON.stringify({'state': (self.device.screen_on == true) ? 'on' : 'off', 'attributes' : {
+		},
+		updateDeviceScreen() {
+			this.device.screen_brightness = fully.getScreenBrightness();
+			this.device.screen_on = fully.getScreenOn();
+			
+			var self = this;
+			var xhr = new XMLHttpRequest();
+			xhr.open('POST', 'https://' + self.config.ha_url + '/api/states/binary_sensor.hatouch_'+self.config.entity_id+'_screen');
+			xhr.send(JSON.stringify({'state': (self.device.screen_on == true) ? 'on' : 'off', 'attributes' : {
 				'brightness' : self.device.screen_brightness
 			}}));
-			var xhr3 = new XMLHttpRequest();
-			xhr3.open('POST', 'https://' + window.config.ha_url + '/api/states/binary_sensor.hatouch_'+window.config.entity_id+'_is_plugged');
-			xhr3.send(JSON.stringify({'state': (self.device.is_plugged  == true) ? 'on' : 'off'}));
-			var xhr4 = new XMLHttpRequest();
-			xhr4.open('POST', 'https://' + window.config.ha_url + '/api/states/sensor.hatouch_'+window.config.entity_id+'_battery_level');
-			xhr4.send(JSON.stringify({'state': self.device.battery_level}));
-
 		}
 	},
 	mounted: function() {
 		this.getTime();
 		setInterval(this.getTime, 1000);
-		setInterval(this.idleIncrement, 1000);
 
 		//Get config from local storage, otherwise redirect to config page
 		if (localStorage.getItem("config") !== null) {
@@ -346,5 +355,10 @@ const app = new Vue({
 		this.$store.dispatch('CONNECT', this.config);
 
 		this.$data['loaded'] = true;
+
+		//Set up HA entities from Fully Kiosk Browser
+		if (typeof fully !== 'undefined') {
+			this.updateDeviceEntities();
+		}
 	},
 })
