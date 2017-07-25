@@ -54,7 +54,8 @@ var reconnectTimer=0;
 const store = new Vuex.Store({
 	state: {
 		entities: {},
-		notifications: []
+		notifications: [],
+		weather_alerts: [],
 	},
 	mutations: {
 		UPDATE_ENTITY(state, entity) {
@@ -117,14 +118,41 @@ const store = new Vuex.Store({
 		},
 		UPDATE_NOTIFICATIONS(state) {
 			state.notifications = JSON.parse(localStorage.getItem("notifications"));
+		},
+		UPDATE_ALERTS(state, alert) {
+			// Loop through existing alerts and see if this alert already exists.
+			// If so, update it with the latest information from the NWS feed
+			var inArray = false;
+			for (var i = 0; i < state.weather_alerts.length; i++) {
+				var existingAlert = state.weather_alerts[i];
+				if (existingAlert.id == alert.id) {
+					inArray = true;
+					state.weather_alerts[i] = alert;
+				}
+			}
+			// If it doesn't exist, then add it to our alerts array
+			if (inArray === false) {
+				state.weather_alerts.unshift(alert);
+			}
+		},
+		REMOVE_ALERT(state, walert) {
+			var filteredAlerts = state.weather_alerts.filter(function(e) {
+				return e.id != walert.id;
+			});
+			state.weather_alerts = filteredAlerts;
+		},
+		CLEAR_ALERTS(state) {
+			state.weather_alerts = [];
 		}
+		
 	},
 	actions: {
 		CONNECT({commit}, config) {
 			//Initialize local storage for notifications
 			if (!localStorage.getItem("notifications")) { localStorage.setItem("notifications","[]"); }
 			commit("UPDATE_NOTIFICATIONS");
-			
+
+			//Connect to Home Assistant
 			var url = config['ha_url'];
 
 			ws = new WebSocket('wss://'+url+'/api/websocket');
@@ -173,6 +201,43 @@ const store = new Vuex.Store({
 					window.reconnectTimer=setInterval(function(){app.$store.dispatch('CONNECT', config);}, 5000);
 				}
 			}
+		},
+		UPDATE_ALERTS({commit, state}, config) {
+			// Grab current NWS Alerts from our alerts proxy
+			var self = this;
+			var xhr = new XMLHttpRequest();
+			xhr.open('GET', 'get_alerts.php?zone='+config['nws_alert_zone']);
+			xhr.onload = function(e) {
+				if (JSON.parse(this.response) != null) {
+					var rawalerts = JSON.parse(this.response);
+					//TODO: Send out toast notifications for new alerts.
+					//If type = tornado, severe thunderstorm, or flash flood watch/warning, send fullscreen alert with TTS and eas tone.
+					if (rawalerts.features.length > 0) {
+						// Run UPDATE_ALERTS for each alert in the NWS feed
+						for (var i = 0; i < rawalerts.features.length; i++) {
+							var a = rawalerts.features[i].properties;
+							commit('UPDATE_ALERTS', a);
+						}
+
+						// Loop through saved alerts and remove any that weren't in the NWS feed (cancelled, expired, etc)
+						var existingAlerts = state.weather_alerts;
+						for (var i = 0; i < existingAlerts.length; i++) {
+							var a = existingAlerts[i];
+							var inArray = false;
+							for (var j = 0; j < rawalerts.features.length; j++) {
+								var b = rawalerts.features[j].properties;
+								if (a.id == b.id) { inArray = true; break; }
+							}
+							if (inArray === false) {
+								commit('REMOVE_ALERT', a);
+							}
+						}
+					} else {
+						commit('CLEAR_ALERTS');
+					}
+				}
+			}
+			xhr.send();
 		}
 	}
 });
@@ -222,7 +287,6 @@ const app = new Vue({
 			ip6_address: '',
 			mac_address: '',
 		},
-		'notificationModalVisible' : false
 	},
 	computed: {
 		entities() {
@@ -230,6 +294,9 @@ const app = new Vue({
 		},
 		notifications() {
 			return this.$store.state.notifications;
+		},
+		weather_alerts() {
+			return this.$store.state.weather_alerts;
 		},
 		fullscreenView() {
 			if (this.$route.path == "/screensaver") { return true; }
@@ -353,6 +420,10 @@ const app = new Vue({
 		}
 
 		this.$store.dispatch('CONNECT', this.config);
+
+		var self = this;
+		self.$store.dispatch('UPDATE_ALERTS', self.config);
+		setInterval(function() {self.$store.dispatch('UPDATE_ALERTS', self.config);}, 30000);
 
 		this.$data['loaded'] = true;
 

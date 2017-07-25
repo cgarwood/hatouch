@@ -46,6 +46,11 @@
 					<label for="screensaver_timeout">Screensaver Timeout (seconds)</label>
 					<input v-model.number="config.screensaver_timeout" type="text" class="form-control" id="screensaver_timeout" placeholder="300">
 				</div>
+				<div class="form-group">
+					<label for="screensaver_timeout">Weather Alerts Zone</label>
+					<input v-model.number="config.nws_alert_zone" type="text" class="form-control" id="nws_alert_zone" placeholder="300">
+					<p class="help-block">A list of zone IDs is available at <a href="https://alerts-v2.weather.gov/">https://alerts-v2.weather.gov/</a></p>
+				</div>
 			</div>
 		</div>
 		<input type="submit" class="btn btn-primary" value="Save Configuration" v-on:click.prevent="saveConfig">

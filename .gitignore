@@ -3,3 +3,4 @@ node_modules/
 npm-debug.log
 config.js
 dist/build.js
+nws_alerts_cache.txt
