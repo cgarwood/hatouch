@@ -212,7 +212,7 @@ const store = new Vuex.Store({
 					var rawalerts = JSON.parse(this.response);
 					//TODO: Send out toast notifications for new alerts.
 					//If type = tornado, severe thunderstorm, or flash flood watch/warning, send fullscreen alert with TTS and eas tone.
-					if (rawalerts.features.length > 0) {
+					if (typeof rawalerts.features !== 'undefined' && rawalerts.features.length > 0) {
 						// Run UPDATE_ALERTS for each alert in the NWS feed
 						for (var i = 0; i < rawalerts.features.length; i++) {
 							var a = rawalerts.features[i].properties;

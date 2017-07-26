@@ -24,8 +24,9 @@
 		
 	</div>
 	<div v-else>
+		<span class="info-box-icon bg-black"><i class="fa fa-spinner fa-spin"></i></span>
 		<div class="info-box">
-			Loading...
+			Loading {{entity_id}}...
 		</div>
 	</div>
 	
